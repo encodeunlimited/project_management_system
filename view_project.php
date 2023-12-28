@@ -304,11 +304,11 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 	</div>
 	<div class="row">
 		<div class="col-md-6">
-			<div class="card">
+		<div class="card card-outline card-warning">
 				<div class="card-header">
 					<b>Members Progress/Activity</b>
 					<div class="card-tools">
-						<button class="btn btn-primary bg-gradient-primary btn-sm" type="button" id="new_productivity"><i class="fa fa-plus"></i> New Productivity</button>
+						<button class="btn btn-warning bg-gradient-warning btn-sm" type="button" id="new_productivity"><i class="fa fa-plus"></i> New Productivity</button>
 					</div>
 				</div>
 				<div class="card-body">
@@ -359,11 +359,11 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 			</div>
 		</div>
 		<div class="col-md-6">
-			<div class="card">
+		<div class="card card-outline card-success">
 				<div class="card-header">
-					<b>Members Progress/Activity</b>
+					<b>Discussion</b>
 					<div class="card-tools">
-						<button class="btn btn-primary bg-gradient-primary btn-sm" type="button" id="new_productivity"><i class="fa fa-plus"></i> New Productivity</button>
+						<button class="btn btn-success bg-gradient-success btn-sm" type="button" id="new_discussion"><i class="fa fa-plus"></i> New Discussion</button>
 					</div>
 				</div>
 				<div class="card-body" id="table">
@@ -418,7 +418,7 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 		_conf("Are you sure to delete this progress?", "delete_progress", [$(this).attr('data-id')])
 	})
 	$('#new_discussion').click(function() {
-		uni_modal("<i class='fa fa-plus'></i> New Progress", "manage_progress.php?pid=<?php echo $id ?>", 'large')
+		uni_modal("<i class='fa fa-plus'></i> New Discussion", "manage_discussion.php?pid=<?php echo $id ?>", 'large')
 	})
 
 	function delete_progress($id) {

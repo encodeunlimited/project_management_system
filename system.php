@@ -3,7 +3,7 @@
 include 'db_connect.php';
 $project_id = $_GET['id'];
 
-$progress = $conn->query("SELECT p.*,concat(u.firstname,' ',u.lastname) as uname,u.avatar,t.task FROM user_productivity p inner join users u on u.id = p.user_id inner join task_list t on t.id = p.task_id where p.project_id = $project_id order by unix_timestamp(p.date_created) desc");
+$progress = $conn->query("SELECT p.*,concat(u.firstname,' ',u.lastname) as uname,u.avatar,t.task FROM discussion_list p inner join users u on u.id = p.user_id inner join task_list t on t.id = p.task_id where p.project_id = $project_id order by unix_timestamp(p.date_created) desc");
 
 //$progress = $conn->query("SELECT p.*,concat(u.firstname,' ',u.lastname) as uname,u.avatar,t.task FROM user_productivity p inner join users u on u.id = p.user_id inner join task_list t on t.id = p.task_id where p.project_id = $id order by unix_timestamp(p.date_created) desc ");
 while ($row = $progress->fetch_assoc()) :
@@ -14,15 +14,14 @@ while ($row = $progress->fetch_assoc()) :
             
             <img class="img-circle img-bordered-sm" src="assets/uploads/<?php echo $row['avatar'] ?>" alt="user image">
             <span class="username">
-                <a href="#"><?php echo ucwords($row['uname']) ?>[ <?php echo ucwords($row['task']) ?> ]</a>
+                <a href="#"><?php echo ucwords($row['uname']) ?>[ <?php echo ucwords($row['task']) ?> ][ <?php echo ucwords($row['subject']) ?> ]</a>
             </span>
             <span class="description">
                 <span class="fa fa-calendar-day"></span>
-                <span><b><?php echo date('M d, Y', strtotime($row['date'])) ?></b></span>
+                <span><b><?php echo date('M d, Y', strtotime($row['date_created'])) ?></b></span>
                 <span class="fa fa-user-clock"></span>
-                <span>Start: <b><?php echo date('h:i A', strtotime($row['date'] . ' ' . $row['start_time'])) ?></b></span>
-                <span> | </span>
-                <span>End: <b><?php echo date('h:i A', strtotime($row['date'] . ' ' . $row['end_time'])) ?></b></span>
+                <span><b><?php echo date('h:i A', strtotime($row['date_created'])) ?></b></span>
+                
             </span>
         </div>
         <!-- /.user-block -->

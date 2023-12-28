@@ -379,16 +379,13 @@ Class Action {
 				}
 			}
 		}
-		$dur = abs(strtotime("2020-01-01 ".$end_time)) - abs(strtotime("2020-01-01 ".$start_time));
-		$dur = $dur / (60 * 60);
-		$data .= ", time_rendered='$dur' ";
-		// echo "INSERT INTO user_productivity set $data"; exit;
+		
 		if(empty($id)){
 			$data .= ", user_id={$_SESSION['login_id']} ";
 			
-			$save = $this->db->query("INSERT INTO user_productivity set $data");
+			$save = $this->db->query("INSERT INTO discussion_list set $data");
 		}else{
-			$save = $this->db->query("UPDATE user_productivity set $data where id = $id");
+			$save = $this->db->query("UPDATE discussion_list set $data where id = $id");
 		}
 		if($save){
 			return 1;
