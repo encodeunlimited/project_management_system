@@ -298,6 +298,37 @@ Class Action {
 			return 1;
 		}
 	}
+	function save_ticket(){
+		extract($_POST);
+		$data = "";
+		foreach($_POST as $k => $v){
+			if(!in_array($k, array('id')) && !is_numeric($k)){
+				if($k == 'description')
+					$v = htmlentities(str_replace("'","&#x2019;",$v));
+				if(empty($data)){
+					$data .= " $k='$v' ";
+				}else{
+					$data .= ", $k='$v' ";
+				}
+			}
+		}
+		if(empty($id)){
+			$data .= ", user_id={$_SESSION['login_id']} ";
+			$save = $this->db->query("INSERT INTO ticket_list set $data");
+		}else{
+			$save = $this->db->query("UPDATE ticket_list set $data where id = $id");
+		}
+		if($save){
+			return 1;
+		}
+	}
+	function delete_ticket(){
+		extract($_POST);
+		$delete = $this->db->query("DELETE FROM ticket_list where id = $id");
+		if($delete){
+			return 1;
+		}
+	}
 	function save_progress(){
 		extract($_POST);
 		$data = "";
@@ -331,6 +362,35 @@ Class Action {
 		extract($_POST);
 		$delete = $this->db->query("DELETE FROM user_productivity where id = $id");
 		if($delete){
+			return 1;
+		}
+	}
+	function save_discussion(){
+		extract($_POST);
+		$data = "";
+		foreach($_POST as $k => $v){
+			if(!in_array($k, array('id')) && !is_numeric($k)){
+				if($k == 'comment')
+					$v = htmlentities(str_replace("'","&#x2019;",$v));
+				if(empty($data)){
+					$data .= " $k='$v' ";
+				}else{
+					$data .= ", $k='$v' ";
+				}
+			}
+		}
+		$dur = abs(strtotime("2020-01-01 ".$end_time)) - abs(strtotime("2020-01-01 ".$start_time));
+		$dur = $dur / (60 * 60);
+		$data .= ", time_rendered='$dur' ";
+		// echo "INSERT INTO user_productivity set $data"; exit;
+		if(empty($id)){
+			$data .= ", user_id={$_SESSION['login_id']} ";
+			
+			$save = $this->db->query("INSERT INTO user_productivity set $data");
+		}else{
+			$save = $this->db->query("UPDATE user_productivity set $data where id = $id");
+		}
+		if($save){
 			return 1;
 		}
 	}

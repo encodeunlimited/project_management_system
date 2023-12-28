@@ -1,8 +1,8 @@
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=5">
   <?php 
-  date_default_timezone_set("Asia/Manila");
+  date_default_timezone_set("Asia/Colombo");
   
   ob_start();
   $title = isset($_GET['page']) ? ucwords(str_replace("_", ' ', $_GET['page'])) : "Home";

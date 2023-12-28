@@ -17,7 +17,7 @@
 
 	include 'header.php' 
 ?>
-<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed" onload = "table();">
 <div class="wrapper">
   <?php include 'topbar.php' ?>
   <?php include 'sidebar.php' ?>
@@ -122,7 +122,7 @@
 
   <!-- Main Footer -->
   <footer class="main-footer">
-    <strong>Copyright &copy; 2021 <a href="https://www.campcodes.com/">CampCodes</a>.</strong>
+    <strong>Copyright &copy; 2023 <a href="http://univotec.ac.lk/">Univotec</a>.</strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
       <b><?php echo $_SESSION['system']['name'] ?></b>
@@ -135,5 +135,6 @@
 <!-- jQuery -->
 <!-- Bootstrap -->
 <?php include 'footer.php' ?>
+
 </body>
 </html>

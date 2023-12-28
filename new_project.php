@@ -33,6 +33,48 @@
           </div>
           <div class="col-md-6">
             <div class="form-group">
+              <label for="" class="control-label">Review Brief Date</label>
+              <input type="date" class="form-control form-control-sm" autocomplete="off" name="review_brief_date" value="<?php echo isset($review_brief_date) ? date("Y-m-d",strtotime($review_brief_date)) : '' ?>">
+            </div>
+          </div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+            <div class="form-group">
+              <label for="" class="control-label">Design Date</label>
+              <input type="date" class="form-control form-control-sm" autocomplete="off" name="design_date" value="<?php echo isset($design_date) ? date("Y-m-d",strtotime($design_date)) : '' ?>">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="" class="control-label">Development Date</label>
+              <input type="date" class="form-control form-control-sm" autocomplete="off" name="development_date" value="<?php echo isset($development_date) ? date("Y-m-d",strtotime($development_date)) : '' ?>">
+            </div>
+          </div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+            <div class="form-group">
+              <label for="" class="control-label">Site Test Date</label>
+              <input type="date" class="form-control form-control-sm" autocomplete="off" name="site_test_date" value="<?php echo isset($site_test_date) ? date("Y-m-d",strtotime($site_test_date)) : '' ?>">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="" class="control-label">UAT Date</label>
+              <input type="date" class="form-control form-control-sm" autocomplete="off" name="uat_date" value="<?php echo isset($uat_date) ? date("Y-m-d",strtotime($uat_date)) : '' ?>">
+            </div>
+          </div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+            <div class="form-group">
+              <label for="" class="control-label">Go Live Date</label>
+              <input type="date" class="form-control form-control-sm" autocomplete="off" name="go_live_date" value="<?php echo isset($go_live_date) ? date("Y-m-d",strtotime($go_live_date)) : '' ?>">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
               <label for="" class="control-label">End Date</label>
               <input type="date" class="form-control form-control-sm" autocomplete="off" name="end_date" value="<?php echo isset($end_date) ? date("Y-m-d",strtotime($end_date)) : '' ?>">
             </div>

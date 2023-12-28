@@ -66,6 +66,16 @@ if($action == 'delete_task'){
 	if($save)
 		echo $save;
 }
+if($action == 'save_ticket'){
+	$save = $crud->save_ticket();
+	if($save)
+		echo $save;
+}
+if($action == 'delete_ticket'){
+	$save = $crud->delete_ticket();
+	if($save)
+		echo $save;
+}
 if($action == 'save_progress'){
 	$save = $crud->save_progress();
 	if($save)
