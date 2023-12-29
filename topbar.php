@@ -11,14 +11,29 @@
         <a class="nav-link text-white"  href="./" role="button"> <large><b><?php echo $_SESSION['system']['name'] ?></b></large></a>
       </li>
     </ul>
+    
 
     <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+      <div class="container">
+        <div class="notification-icon">
+          <i class="fa fa-bell"></i>
+          <span class="notification-count">0</span>
+        </div>
+        <div class="notification-content">
+          <ul id="notification-list">
+            <!-- Notification content will be dynamically populated here -->
+          </ul>
+        </div>
+      </div>
+      </li>
      
       <li class="nav-item">
         <a class="nav-link" data-widget="fullscreen" href="#" role="button">
           <i class="fas fa-expand-arrows-alt"></i>
         </a>
       </li>
+      
      <li class="nav-item dropdown">
             <a class="nav-link"  data-toggle="dropdown" aria-expanded="true" href="javascript:void(0)">
               <span>

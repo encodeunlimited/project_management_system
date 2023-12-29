@@ -41,6 +41,7 @@
             <hr class="border-primary">
       </div><!-- /.container-fluid -->
     </div>
+    
     <!-- /.content-header -->
 
     <!-- Main content -->

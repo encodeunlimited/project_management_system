@@ -46,11 +46,11 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 										<small><i>Manager Deleted from Database</i></small>
 									<?php endif; ?>
 								</dd>
-							</dd>
+								</dd>
 								<dt><b class="border-bottom border-primary">Description</b></dt>
 								<dd><?php echo html_entity_decode($description) ?></dd>
 							</dl>
-							
+
 						</div>
 						<div class="col-md-3">
 							<dl>
@@ -89,7 +89,7 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 									?>
 								</dd>
 							</dl>
-							
+
 						</div>
 						<div class="col-md-3">
 							<dl>
@@ -158,15 +158,17 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 						<table class="table table-condensed m-0 table-hover">
 							<colgroup>
 								<col width="5%">
-								<col width="25%">
-								<col width="30%">
-								<col width="15%">
+								<col width="20%">
+								<col width="40%">
+								<col width="10%">
+								<col width="10%">
 								<col width="15%">
 							</colgroup>
 							<thead>
 								<th>#</th>
-								<th>Task</th>
+								<th>Subject</th>
 								<th>Description</th>
+								<th>Type</th>
 								<th>Status</th>
 								<th>Action</th>
 							</thead>
@@ -188,12 +190,35 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 										</td>
 										<td>
 											<?php
+											if ($row['type'] == 1) {
+												echo "<span class='badge badge-secondary'>Request a Change</span>";
+											} elseif ($row['type'] == 2) {
+												echo "<span class='badge badge-primary'>Report a Bug</span>";
+											} elseif ($row['type'] == 3) {
+												echo "<span class='badge badge-success'>Ask a Question</span>";
+											} elseif ($row['type'] == 4) {
+												echo "<span class='badge badge-danger'>Risk on Issue</span>";
+											}
+											?>
+										</td>
+										<td>
+											<?php
 											if ($row['status'] == 1) {
-												echo "<span class='badge badge-secondary'>Pending</span>";
+												echo "<span class='badge badge-success'>New</span>";
 											} elseif ($row['status'] == 2) {
-												echo "<span class='badge badge-primary'>On-Progress</span>";
+												echo "<span class='badge badge-warning'>Open</span>";
 											} elseif ($row['status'] == 3) {
-												echo "<span class='badge badge-success'>Done</span>";
+												echo "<span class='badge badge-danger'>Re-Open</span>";
+											} elseif ($row['status'] == 4) {
+												echo "<span class='badge badge-primary'>Waiting Assesment</span>";
+											} elseif ($row['status'] == 5) {
+												echo "<span class='badge badge-success'>Resolved</span>";
+											} elseif ($row['status'] == 6) {
+												echo "<span class='badge badge-secondary'>Closed</span>";
+											} elseif ($row['status'] == 7) {
+												echo "<span class='badge badge-secondary'>Fixed</span>";
+											} elseif ($row['status'] == 8) {
+												echo "<span class='badge badge-secondary'>Canceled</span>";
 											}
 											?>
 										</td>
@@ -238,15 +263,25 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 						<table class="table table-condensed m-0 table-hover">
 							<colgroup>
 								<col width="5%">
+								<col width="20%">
 								<col width="25%">
-								<col width="30%">
-								<col width="15%">
-								<col width="15%">
+								<col width="5%">
+								<col width="5%">
+								<col width="10%">
+								<col width="10%">
+								<col width="10%">
+								<col width="5%">
+								<col width="5%">
 							</colgroup>
 							<thead>
 								<th>#</th>
 								<th>Task</th>
 								<th>Description</th>
+								<th>Type</th>
+								<th>Priority</th>
+								<th>Start Date</th>
+								<th>Due Date</th>
+								<th>Progress</th>
 								<th>Status</th>
 								<th>Action</th>
 							</thead>
@@ -268,8 +303,69 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 										</td>
 										<td>
 											<?php
+											if ($row['type'] == 1) {
+												echo "<span class='badge badge-secondary'>Change</span>";
+											} elseif ($row['type'] == 2) {
+												echo "<span class='badge badge-dark'>Plugin</span>";
+											} elseif ($row['type'] == 3) {
+												echo "<span class='badge badge-success'>Task</span>";
+											} elseif ($row['type'] == 4) {
+												echo "<span class='badge badge-danger'>Bug</span>";
+											} elseif ($row['type'] == 5) {
+												echo "<span class='badge badge-primary'>Idea</span>";
+											} elseif ($row['type'] == 6) {
+												echo "<span class='badge badge-info'>Quote</span>";
+											} elseif ($row['type'] == 7) {
+												echo "<span class='badge badge-warning'>Issue</span>";
+											}
+
+											?>
+										</td>
+										<td>
+											<?php
+											if ($row['priority'] == 1) {
+												echo "<span class='badge badge-info'>Unknown</span>";
+											} elseif ($row['priority'] == 2) {
+												echo "<span class='badge badge-primary'>Low</span>";
+											} elseif ($row['priority'] == 3) {
+												echo "<span class='badge badge-success'>Medium</span>";
+											} elseif ($row['priority'] == 4) {
+												echo "<span class='badge badge-warning'>High</span>";
+											} elseif ($row['type'] == 5) {
+												echo "<span class='badge badge-danger'>Urgent</span>";
+											}
+
+											?>
+										</td>
+										<td><span><?php echo date('M d, Y', strtotime($row['start_date'])) ?></span></td>
+										<td><span><?php echo date('M d, Y', strtotime($row['due_date'])) ?></span></td>
+										<td>
+											<div class="progress">
+												<div class="progress-bar rounded-pill
+            <?php
+									if ($row['progress'] >= 0 && $row['progress'] <= 10) {
+										echo 'bg-danger';
+									} elseif ($row['progress'] > 10 && $row['progress'] <= 30) {
+										echo 'bg-warning';
+									} elseif ($row['progress'] > 30 && $row['progress'] <= 50) {
+										echo 'bg-info';
+									} elseif ($row['progress'] > 50 && $row['progress'] <= 70) {
+										echo 'bg-primary';
+									} elseif ($row['progress'] > 70 && $row['progress'] <= 100) {
+										echo 'bg-success';
+									}
+			?>" role="progressbar" style="width: <?php echo $row['progress'] ?>%;" aria-valuenow="<?php echo $row['progress'] ?>" aria-valuemin="0" aria-valuemax="100">
+													<span class="sr-only"><?php echo $row['progress'] ?>% Complete</span>
+												</div>
+											</div>
+											<span><?php echo $row['progress'] ?>%</span>
+										</td>
+
+
+										<td>
+											<?php
 											if ($row['status'] == 1) {
-												echo "<span class='badge badge-secondary'>Pending</span>";
+												echo "<span class='badge badge-warning'>Pending</span>";
 											} elseif ($row['status'] == 2) {
 												echo "<span class='badge badge-primary'>On-Progress</span>";
 											} elseif ($row['status'] == 3) {
@@ -304,7 +400,7 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 	</div>
 	<div class="row">
 		<div class="col-md-6">
-		<div class="card card-outline card-warning">
+			<div class="card card-outline card-warning">
 				<div class="card-header">
 					<b>Members Progress/Activity</b>
 					<div class="card-tools">
@@ -359,7 +455,7 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 			</div>
 		</div>
 		<div class="col-md-6">
-		<div class="card card-outline card-success">
+			<div class="card card-outline card-success">
 				<div class="card-header">
 					<b>Discussion</b>
 					<div class="card-tools">
@@ -367,7 +463,7 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 					</div>
 				</div>
 				<div class="card-body" id="table">
-					
+
 				</div>
 			</div>
 		</div>
@@ -443,17 +539,16 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 
 	const id = <?php echo isset($_GET['id']) ? json_encode($_GET['id']) : 'null'; ?>;
 
-      function table(){
-        const xhttp = new XMLHttpRequest();
-        xhttp.onload = function() {
-          document.getElementById("table").innerHTML = this.responseText;
-        }
-        xhttp.open("GET", "system.php?id=" + id);
-        xhttp.send();
-      }
+	function table() {
+		const xhttp = new XMLHttpRequest();
+		xhttp.onload = function() {
+			document.getElementById("table").innerHTML = this.responseText;
+		}
+		xhttp.open("GET", "system.php?id=" + id);
+		xhttp.send();
+	}
 
-      setInterval(function(){
-        table();
-      }, 10000);
-
+	setInterval(function() {
+		table();
+	}, 10000);
 </script>

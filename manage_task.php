@@ -53,8 +53,17 @@ if (isset($_GET['id'])) {
 		</div>
 		<div class="form-group">
 			<label for="" class="control-label">Progress</label>
-			<input type="text" class="form-control form-control-sm" name="progress" value="<?php echo isset($progress) ? $progress : '' ?>">
+			<input type="range" class="form-control-range" ... ... name="progress" min="0" max="100" value="<?php echo isset($progress) ? $progress : '0' ?>" oninput="updateProgressValue(this.value)">
+			<output for="progress"><?php echo isset($progress) ? $progress : '0' ?>%</output>
 		</div>
+
+		<script>
+			function updateProgressValue(value) {
+				document.querySelector('output[for="progress"]').value = value + '%';
+			}
+		</script>
+
+
 		<div class="form-group">
 			<label for="">Status</label>
 			<select name="status" id="status" class="custom-select custom-select-sm">

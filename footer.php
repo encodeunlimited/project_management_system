@@ -128,6 +128,27 @@ $('.number').on('input keyup keypress',function(){
         val = val > 0 ? parseFloat(val).toLocaleString("en-US") : 0;
         $(this).val(val)
     })
+
+	document.addEventListener('DOMContentLoaded', function() {
+  const notificationIcon = document.querySelector('.notification-icon');
+  const notificationContent = document.querySelector('.notification-content');
+
+  // Update notification count with a 1-second delay
+  setInterval(function() {
+    // Make an AJAX request to fetch the latest notification count from the server
+    // For example, using fetch API or XMLHttpRequest
+    // Update the notification count in the bell icon
+    const notificationCount = 50; // Replace with the actual notification count fetched from the server
+    document.querySelector('.notification-count').textContent = notificationCount;
+  }, 1000);
+
+  // Show/hide notification content on bell icon click
+  notificationIcon.addEventListener('click', function() {
+    notificationContent.style.display = notificationContent.style.display === 'block' ? 'none' : 'block';
+  });
+});
+
+
 </script>
 <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- overlayScrollbars -->
