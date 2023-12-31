@@ -1,4 +1,5 @@
 <?php
+//include 'send_email.php';
 ob_start();
 date_default_timezone_set("Asia/Colombo");
 
@@ -90,6 +91,11 @@ if($action == 'delete_progress'){
 	$save = $crud->delete_progress();
 	if($save)
 		echo $save;
+}
+if($action == 'get_report'){
+	$get = $crud->get_report();
+	if($get)
+		echo $get;
 }
 if($action == 'get_report'){
 	$get = $crud->get_report();

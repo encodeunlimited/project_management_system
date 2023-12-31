@@ -4,12 +4,13 @@ ini_set('display_errors', 1);
 class Action
 {
 	private $db;
+	
 
 	public function __construct()
 	{
 		ob_start();
 		include 'db_connect.php';
-		include 'send_email.php';
+		//include 'send_email.php';
 		//require 'send_email.php';
 
 		$this->db = $conn;

@@ -9,9 +9,13 @@ require 'vendor/autoload.php'; // Load Composer's autoloader
 // function sendEmail($recipients, $subject, $body)
 // {
 $mail = new PHPMailer(true);
-$recipients = ['asanka.land@gmail.com', 'asanka.ird@gmail.com', 'asanka.inf@gmail.com'];
-$subject = 'New Project Saved';
-$body = 'A new project has been saved.';
+// $recipients = ['asanka.land@gmail.com', 'asanka.ird@gmail.com', 'asanka.inf@gmail.com'];
+// $subject = 'New Project Saved';
+// $body = 'A new project has been saved.';
+
+$recipients = $_POST['recipients'];
+$subject = $_POST['subject'];
+$body = $_POST['body'];
 
 try {
     // Server settings
