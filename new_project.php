@@ -3,7 +3,7 @@
 <div class="col-lg-12">
 	<div class="card card-outline card-primary">
 		<div class="card-body">
-			<form action="" id="manage-project">
+			<form action="send_email.php" id="manage-project">
 
         <input type="hidden" name="id" value="<?php echo isset($id) ? $id : '' ?>">
 		<div class="row">

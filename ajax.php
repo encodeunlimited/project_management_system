@@ -1,6 +1,6 @@
 <?php
 ob_start();
-date_default_timezone_set("Asia/Manila");
+date_default_timezone_set("Asia/Colombo");
 
 $action = $_GET['action'];
 include 'admin_class.php';
@@ -20,11 +20,11 @@ if($action == 'logout'){
 	if($logout)
 		echo $logout;
 }
-if($action == 'logout2'){
-	$logout = $crud->logout2();
-	if($logout)
-		echo $logout;
-}
+// if($action == 'logout2'){
+// 	$logout = $crud->logout2();
+// 	if($logout)
+// 		echo $logout;
+// }
 
 if($action == 'signup'){
 	$save = $crud->signup();
