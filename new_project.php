@@ -87,13 +87,13 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label for="" class="control-label">Project Manager</label>
-								<select class="form-control form-control-sm select2" name="manager_id">
+								<select class="form-control form-control-sm select2" name="manager_id" id="manager_id">
 									<option></option>
 									<?php
 									$managers = $conn->query("SELECT *,concat(firstname,' ',lastname) as name FROM users where type = 2 order by concat(firstname,' ',lastname) asc ");
 									while ($row = $managers->fetch_assoc()) :
 									?>
-										<option value="<?php echo $row['id'] ?>" <?php echo isset($manager_id) && $manager_id == $row['id'] ? "selected" : '' ?>><?php echo ucwords($row['name']) ?></option>
+										<option value="<?php echo $row['id'] ?>" data-email="<?php echo $row['email'] ?>" <?php echo isset($manager_id) && $manager_id == $row['id'] ? "selected" : '' ?>><?php echo ucwords($row['name']) ?></option>
 									<?php endwhile; ?>
 								</select>
 							</div>
@@ -104,15 +104,16 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="" class="control-label">Project Team Members</label>
-							<select class="form-control form-control-sm select2" multiple="multiple" name="user_ids[]">
+							<select class="form-control form-control-sm select2" multiple="multiple" name="user_ids[]" id="user_ids">
 								<option></option>
 								<?php
 								$employees = $conn->query("SELECT *,concat(firstname,' ',lastname) as name FROM users where type = 3 order by concat(firstname,' ',lastname) asc ");
 								while ($row = $employees->fetch_assoc()) :
 								?>
-									<option value="<?php echo $row['id'] ?>" <?php echo isset($user_ids) && in_array($row['id'], explode(',', $user_ids)) ? "selected" : '' ?>><?php echo ucwords($row['name']) ?></option>
+									<option value="<?php echo $row['id'] ?>" data-email="<?php echo $row['email'] ?>" <?php echo isset($user_ids) && in_array($row['id'], explode(',', $user_ids)) ? "selected" : '' ?>><?php echo ucwords($row['name']) ?></option>
 								<?php endwhile; ?>
 							</select>
+
 						</div>
 					</div>
 				</div>
@@ -164,6 +165,19 @@
 		start_load();
 		var form = $(this)[0];
 		var formData = new FormData(form);
+		var recipients = [];
+
+		// Extract email addresses from user_ids dropdown
+		$('#manager_id option:selected, #user_ids option:selected').each(function() {
+			var email = $(this).data('email');
+			if (email) {
+				recipients.push(email);
+			}
+		});
+
+		formData.append('name', $('input[name="name"]').val());
+		formData.append('description', $('textarea[name="description"]').val());
+
 		$.ajax({
 			url: 'ajax.php?action=save_project',
 			data: formData,
@@ -174,18 +188,18 @@
 			type: 'POST',
 			success: function(resp) {
 				alert_toast('Data successfully saved and email sent', "success");
-							
-							setTimeout(function() {
-								location.href = 'index.php?page=project_list';
-							}, 2000);
+
+				setTimeout(function() {
+					location.href = 'index.php?page=project_list';
+				}, 2000);
 				if (resp == 1) {
 					// Project saved successfully, now send the email
 					$.ajax({
 						url: 'send_email.php', // Assuming the email sending function is accessible via this URL
 						data: {
-							recipients: ['asanka.land@gmail.com', 'asanka.ird@gmail.com', 'asanka.inf@gmail.com'],
-							subject: 'New Project Assigned',
-							body: 'A new project has been saved.'
+							recipients: recipients,
+							subject: 'New Project Assigned - ' + formData.get('name'),
+							body: 'A new project has been assigned to ' + formData.get('name') + '. Description: ' + formData.get('description'),
 						},
 						method: 'POST',
 						success: function(emailResp) {
