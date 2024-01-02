@@ -43,5 +43,13 @@
   <script src="assets/plugins/jquery-ui/jquery-ui.min.js"></script>
  <!-- summernote -->
   <link rel="stylesheet" href="assets/plugins/summernote/summernote-bs4.min.css">
+
+  <style>
+    body {
+      background-image: url('assets\img\bg.jpg'); /* "C:\xampp\htdocs\project_management_system\assets\img\bg.jpg" */
+      background-size: cover; /* This ensures the background image covers the entire body */
+      background-attachment: fixed; /* This keeps the background image fixed while the content scrolls */
+    }
+  </style>
   
 </head>

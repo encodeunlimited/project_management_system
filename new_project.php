@@ -199,7 +199,7 @@
 						data: {
 							recipients: recipients,
 							subject: 'New Project Assigned - ' + formData.get('name'),
-							body: 'A new project has been assigned to ' + formData.get('name') + '. Description: ' + formData.get('description'),
+							body: 'A new project has been assigned to You - Name: ' + formData.get('name') + ' - Description: ' + formData.get('description'),
 						},
 						method: 'POST',
 						success: function(emailResp) {
