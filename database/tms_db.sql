@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 02, 2024 at 05:03 AM
+-- Generation Time: Jan 02, 2024 at 06:00 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -173,13 +173,17 @@ CREATE TABLE `user_productivity` (
 -- Indexes for table `discussion_list`
 --
 ALTER TABLE `discussion_list`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `task` (`task_id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `FORIGN` (`project_id`);
 
 --
 -- Indexes for table `project_list`
 --
 ALTER TABLE `project_list`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `manager_id` (`manager_id`);
 
 --
 -- Indexes for table `system_settings`
@@ -191,13 +195,16 @@ ALTER TABLE `system_settings`
 -- Indexes for table `task_list`
 --
 ALTER TABLE `task_list`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `project_id` (`project_id`);
 
 --
 -- Indexes for table `ticket_list`
 --
 ALTER TABLE `ticket_list`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `usr_id` (`user_id`),
+  ADD KEY `prg_id` (`project_id`);
 
 --
 -- Indexes for table `users`
@@ -209,7 +216,10 @@ ALTER TABLE `users`
 -- Indexes for table `user_productivity`
 --
 ALTER TABLE `user_productivity`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `task_id` (`task_id`),
+  ADD KEY `user_ids` (`user_id`),
+  ADD KEY `project_ids` (`project_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -256,6 +266,43 @@ ALTER TABLE `users`
 --
 ALTER TABLE `user_productivity`
   MODIFY `id` int(30) NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `discussion_list`
+--
+ALTER TABLE `discussion_list`
+  ADD CONSTRAINT `FORIGN` FOREIGN KEY (`project_id`) REFERENCES `project_list` (`id`);
+
+--
+-- Constraints for table `project_list`
+--
+ALTER TABLE `project_list`
+  ADD CONSTRAINT `manager_id` FOREIGN KEY (`manager_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `task_list`
+--
+ALTER TABLE `task_list`
+  ADD CONSTRAINT `project_id` FOREIGN KEY (`project_id`) REFERENCES `project_list` (`id`);
+
+--
+-- Constraints for table `ticket_list`
+--
+ALTER TABLE `ticket_list`
+  ADD CONSTRAINT `prg_id` FOREIGN KEY (`project_id`) REFERENCES `project_list` (`id`),
+  ADD CONSTRAINT `usr_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `user_productivity`
+--
+ALTER TABLE `user_productivity`
+  ADD CONSTRAINT `project_ids` FOREIGN KEY (`project_id`) REFERENCES `project_list` (`id`),
+  ADD CONSTRAINT `task_id` FOREIGN KEY (`task_id`) REFERENCES `task_list` (`id`),
+  ADD CONSTRAINT `user_ids` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
