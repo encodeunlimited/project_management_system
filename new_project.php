@@ -118,6 +118,22 @@
 					</div>
 				</div>
 				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="" class="control-label">Project Clients</label>
+							<select class="form-control form-control-sm select2" multiple="multiple" name="client_ids[]" id="client_ids">
+								<option></option>
+								<?php
+								$clients = $conn->query("SELECT *,concat(firstname,' ',lastname) as name FROM users where type = 4 order by concat(firstname,' ',lastname) asc ");
+								while ($row = $clients->fetch_assoc()) :
+								?>
+									<option value="<?php echo $row['id'] ?>" data-email="<?php echo $row['email'] ?>" <?php echo isset($client_ids) && in_array($row['id'], explode(',', $client_ids)) ? "selected" : '' ?>><?php echo ucwords($row['name']) ?></option>
+								<?php endwhile; ?>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="row">
 					<div class="col-md-10">
 						<div class="form-group">
 							<label for="" class="control-label">Description</label>
@@ -168,7 +184,7 @@
 		var recipients = [];
 
 		// Extract email addresses from user_ids dropdown
-		$('#manager_id option:selected, #user_ids option:selected').each(function() {
+		$('#manager_id option:selected, #user_ids option:selected, #client_ids option:selected').each(function() {
 			var email = $(this).data('email');
 			if (email) {
 				recipients.push(email);

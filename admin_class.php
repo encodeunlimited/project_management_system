@@ -248,7 +248,7 @@ class Action
 		extract($_POST);
 		$data = "";
 		foreach ($_POST as $k => $v) {
-			if (!in_array($k, array('id', 'user_ids')) && !is_numeric($k)) {
+			if (!in_array($k, array('id', 'user_ids','clientids')) && !is_numeric($k)) {
 				if ($k == 'description')
 					$v = htmlentities(str_replace("'", "&#x2019;", $v));
 				if (empty($data)) {
@@ -260,6 +260,9 @@ class Action
 		}
 		if (isset($user_ids)) {
 			$data .= ", user_ids='" . implode(',', $user_ids) . "' ";
+		}
+		if (isset($client_ids)) {
+			$data .= ", client_ids='" . implode(',', $client_ids) . "' ";
 		}
 		// echo $data;exit;
 		if (empty($id)) {

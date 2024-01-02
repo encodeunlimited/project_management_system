@@ -23,18 +23,18 @@ elseif ($status == 0 && strtotime(date('Y-m-d')) > strtotime($end_date)) :
 endif;
 $manager = $conn->query("SELECT *,concat(firstname,' ',lastname) as name FROM users where id = $manager_id");
 $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
+
 ?>
 <div class="col-lg-12">
 	<div class="row">
-		<div class="col-md-12" style="max-height: 400px; overflow-y: auto;">
+		<div class="col-md-9" style="max-height: 400px; overflow-y: auto;">
 			<div class="callout callout-info">
-				<div class="col-md-12">
+				<div class="col-md-9">
 					<div class="row">
 						<div class="col-sm-6">
 							<dl>
 								<dt><b class="border-bottom border-primary">Project Name</b></dt>
 								<dd><?php echo ucwords($name) ?></dd>
-								<dd>
 								<dt><b class="border-bottom border-primary">Project Manager</b></dt>
 								<dd>
 									<?php if (isset($manager['id'])) : ?>
@@ -46,7 +46,7 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 										<small><i>Manager Deleted from Database</i></small>
 									<?php endif; ?>
 								</dd>
-								</dd>
+
 								<dt><b class="border-bottom border-primary">Description</b></dt>
 								<dd><?php echo html_entity_decode($description) ?></dd>
 							</dl>
@@ -111,363 +111,392 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 						</div>
 					</div>
 				</div>
+
 			</div>
 		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-4">
-			<div class="card card-outline card-secondary">
-				<div class="card-header">
-					<span><b>Team Member/s:</b></span>
-					<div class="card-tools">
-						<!-- <button class="btn btn-primary bg-gradient-primary btn-sm" type="button" id="manage_team">Manage</button> -->
-					</div>
-				</div>
-				<div class="card-body" style="max-height: 300px; overflow-y: auto;">
-					<ul class="users-list clearfix">
-						<?php
-						if (!empty($user_ids)) :
-							$members = $conn->query("SELECT *,concat(firstname,' ',lastname) as name FROM users where id in ($user_ids) order by concat(firstname,' ',lastname) asc");
-							while ($row = $members->fetch_assoc()) :
-						?>
-								<li>
-									<img src="assets/uploads/<?php echo $row['avatar'] ?>" alt="User Image">
-									<a class="users-list-name" href="javascript:void(0)"><?php echo ucwords($row['name']) ?></a>
-									<!-- <span class="users-list-date">Today</span> -->
-								</li>
-						<?php
-							endwhile;
-						endif;
-						?>
-					</ul>
+		<div class="col-md-3">
+			<div class="card-header">
+				<span><b>Client/s:</b></span>
+				<div class="card-tools">
+					<!-- <button class="btn btn-primary bg-gradient-primary btn-sm" type="button" id="manage_team">Manage</button> -->
 				</div>
 			</div>
-		</div>
-		<div class="col-md-8">
-			<div class="card card-outline card-danger">
-				<div class="card-header">
-					<span><b>Ticket List:</b></span>
-					<?php if ($_SESSION['login_type'] != 3) : ?>
-						<div class="card-tools">
-							<button class="btn btn-danger bg-gradient-danger btn-sm" type="button" id="new_ticket"><i class="fa fa-plus"></i> New Ticket</button>
-						</div>
-					<?php endif; ?>
-				</div>
-				<div class="card-body p-0" style="max-height: 250px; overflow-y: auto;">
-					<div class="table-responsive">
-						<table class="table table-condensed m-0 table-hover">
-							<colgroup>
-								<col width="5%">
-								<col width="20%">
-								<col width="40%">
-								<col width="10%">
-								<col width="10%">
-								<col width="15%">
-							</colgroup>
-							<thead>
-								<th>#</th>
-								<th>Subject</th>
-								<th>Description</th>
-								<th>Type</th>
-								<th>Status</th>
-								<th>Action</th>
-							</thead>
-							<tbody>
-								<?php
-								$i = 1;
-								$tickets = $conn->query("SELECT * FROM ticket_list where project_id = {$id} order by subject asc");
-								while ($row = $tickets->fetch_assoc()) :
-									$trans = get_html_translation_table(HTML_ENTITIES, ENT_QUOTES);
-									unset($trans["\""], $trans["<"], $trans[">"], $trans["<h2"]);
-									$desc = strtr(html_entity_decode($row['description']), $trans);
-									$desc = str_replace(array("<li>", "</li>"), array("", ", "), $desc);
-								?>
-									<tr>
-										<td class="text-center"><?php echo $i++ ?></td>
-										<td class=""><b><?php echo ucwords($row['subject']) ?></b></td>
-										<td class="">
-											<p class="truncate"><?php echo strip_tags($desc) ?></p>
-										</td>
-										<td>
-											<?php
-											if ($row['type'] == 1) {
-												echo "<span class='badge badge-secondary'>Request a Change</span>";
-											} elseif ($row['type'] == 2) {
-												echo "<span class='badge badge-primary'>Report a Bug</span>";
-											} elseif ($row['type'] == 3) {
-												echo "<span class='badge badge-success'>Ask a Question</span>";
-											} elseif ($row['type'] == 4) {
-												echo "<span class='badge badge-danger'>Risk on Issue</span>";
-											}
-											?>
-										</td>
-										<td>
-											<?php
-											if ($row['status'] == 1) {
-												echo "<span class='badge badge-success'>New</span>";
-											} elseif ($row['status'] == 2) {
-												echo "<span class='badge badge-warning'>Open</span>";
-											} elseif ($row['status'] == 3) {
-												echo "<span class='badge badge-danger'>Re-Open</span>";
-											} elseif ($row['status'] == 4) {
-												echo "<span class='badge badge-primary'>Waiting Assesment</span>";
-											} elseif ($row['status'] == 5) {
-												echo "<span class='badge badge-success'>Resolved</span>";
-											} elseif ($row['status'] == 6) {
-												echo "<span class='badge badge-secondary'>Closed</span>";
-											} elseif ($row['status'] == 7) {
-												echo "<span class='badge badge-secondary'>Fixed</span>";
-											} elseif ($row['status'] == 8) {
-												echo "<span class='badge badge-secondary'>Canceled</span>";
-											}
-											?>
-										</td>
-										<td class="text-center">
-											<button type="button" class="btn btn-default btn-sm btn-flat border-info wave-effect text-info dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-												Action
-											</button>
-											<div class="dropdown-menu" style="">
-												<a class="dropdown-item view_ticket" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>" data-task="<?php echo $row['subject'] ?>">View</a>
-												<div class="dropdown-divider"></div>
-												<?php if ($_SESSION['login_type'] != 3) : ?>
-													<a class="dropdown-item edit_ticket" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>" data-task="<?php echo $row['subject'] ?>">Edit</a>
-													<div class="dropdown-divider"></div>
-													<a class="dropdown-item delete_ticket" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>">Delete</a>
-												<?php endif; ?>
-											</div>
-										</td>
-									</tr>
-								<?php
-								endwhile;
-								?>
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-12">
-			<div class="card card-outline card-primary">
-				<div class="card-header">
-					<span><b>Task List:</b></span>
-					<?php if ($_SESSION['login_type'] != 3) : ?>
-						<div class="card-tools">
-							<button class="btn btn-primary bg-gradient-primary btn-sm" type="button" id="new_task"><i class="fa fa-plus"></i> New Task</button>
-						</div>
-					<?php endif; ?>
-				</div>
-				<div class="card-body p-0" style="max-height: 250px; overflow-y: auto;">
-					<div class="table-responsive">
-						<table class="table table-condensed m-0 table-hover">
-							<colgroup>
-								<col width="5%">
-								<col width="20%">
-								<col width="25%">
-								<col width="5%">
-								<col width="5%">
-								<col width="10%">
-								<col width="10%">
-								<col width="10%">
-								<col width="5%">
-								<col width="5%">
-							</colgroup>
-							<thead>
-								<th>#</th>
-								<th>Task</th>
-								<th>Description</th>
-								<th>Type</th>
-								<th>Priority</th>
-								<th>Start Date</th>
-								<th>Due Date</th>
-								<th>Progress</th>
-								<th>Status</th>
-								<th>Action</th>
-							</thead>
-							<tbody>
-								<?php
-								$i = 1;
-								$tasks = $conn->query("SELECT * FROM task_list where project_id = {$id} order by task asc");
-								while ($row = $tasks->fetch_assoc()) :
-									$trans = get_html_translation_table(HTML_ENTITIES, ENT_QUOTES);
-									unset($trans["\""], $trans["<"], $trans[">"], $trans["<h2"]);
-									$desc = strtr(html_entity_decode($row['description']), $trans);
-									$desc = str_replace(array("<li>", "</li>"), array("", ", "), $desc);
-								?>
-									<tr>
-										<td class="text-center"><?php echo $i++ ?></td>
-										<td class=""><b><?php echo ucwords($row['task']) ?></b></td>
-										<td class="">
-											<p class="truncate"><?php echo strip_tags($desc) ?></p>
-										</td>
-										<td>
-											<?php
-											if ($row['type'] == 1) {
-												echo "<span class='badge badge-secondary'>Change</span>";
-											} elseif ($row['type'] == 2) {
-												echo "<span class='badge badge-dark'>Plugin</span>";
-											} elseif ($row['type'] == 3) {
-												echo "<span class='badge badge-success'>Task</span>";
-											} elseif ($row['type'] == 4) {
-												echo "<span class='badge badge-danger'>Bug</span>";
-											} elseif ($row['type'] == 5) {
-												echo "<span class='badge badge-primary'>Idea</span>";
-											} elseif ($row['type'] == 6) {
-												echo "<span class='badge badge-info'>Quote</span>";
-											} elseif ($row['type'] == 7) {
-												echo "<span class='badge badge-warning'>Issue</span>";
-											}
-
-											?>
-										</td>
-										<td>
-											<?php
-											if ($row['priority'] == 1) {
-												echo "<span class='badge badge-info'>Unknown</span>";
-											} elseif ($row['priority'] == 2) {
-												echo "<span class='badge badge-primary'>Low</span>";
-											} elseif ($row['priority'] == 3) {
-												echo "<span class='badge badge-success'>Medium</span>";
-											} elseif ($row['priority'] == 4) {
-												echo "<span class='badge badge-warning'>High</span>";
-											} elseif ($row['type'] == 5) {
-												echo "<span class='badge badge-danger'>Urgent</span>";
-											}
-
-											?>
-										</td>
-										<td><span><?php echo date('M d, Y', strtotime($row['start_date'])) ?></span></td>
-										<td><span><?php echo date('M d, Y', strtotime($row['due_date'])) ?></span></td>
-										<td>
-											<div class="progress">
-												<div class="progress-bar rounded-pill
-            <?php
-									if ($row['progress'] >= 0 && $row['progress'] <= 10) {
-										echo 'bg-danger';
-									} elseif ($row['progress'] > 10 && $row['progress'] <= 30) {
-										echo 'bg-warning';
-									} elseif ($row['progress'] > 30 && $row['progress'] <= 50) {
-										echo 'bg-info';
-									} elseif ($row['progress'] > 50 && $row['progress'] <= 70) {
-										echo 'bg-primary';
-									} elseif ($row['progress'] > 70 && $row['progress'] <= 100) {
-										echo 'bg-success';
-									}
-			?>" role="progressbar" style="width: <?php echo $row['progress'] ?>%;" aria-valuenow="<?php echo $row['progress'] ?>" aria-valuemin="0" aria-valuemax="100">
-													<span class="sr-only"><?php echo $row['progress'] ?>% Complete</span>
-												</div>
-											</div>
-											<span><?php echo $row['progress'] ?>%</span>
-										</td>
-
-
-										<td>
-											<?php
-											if ($row['status'] == 1) {
-												echo "<span class='badge badge-warning'>Pending</span>";
-											} elseif ($row['status'] == 2) {
-												echo "<span class='badge badge-primary'>On-Progress</span>";
-											} elseif ($row['status'] == 3) {
-												echo "<span class='badge badge-success'>Done</span>";
-											}
-											?>
-										</td>
-										<td class="text-center">
-											<button type="button" class="btn btn-default btn-sm btn-flat border-info wave-effect text-info dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-												Action
-											</button>
-											<div class="dropdown-menu" style="">
-												<a class="dropdown-item view_task" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>" data-task="<?php echo $row['task'] ?>">View</a>
-												<div class="dropdown-divider"></div>
-												<?php if ($_SESSION['login_type'] != 3) : ?>
-													<a class="dropdown-item edit_task" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>" data-task="<?php echo $row['task'] ?>">Edit</a>
-													<div class="dropdown-divider"></div>
-													<a class="dropdown-item delete_task" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>">Delete</a>
-												<?php endif; ?>
-											</div>
-										</td>
-									</tr>
-								<?php
-								endwhile;
-								?>
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-6">
-			<div class="card card-outline card-warning">
-				<div class="card-header">
-					<b>Members Progress/Activity</b>
-					<div class="card-tools">
-						<button class="btn btn-warning bg-gradient-warning btn-sm" type="button" id="new_productivity"><i class="fa fa-plus"></i> New Productivity</button>
-					</div>
-				</div>
-				<div class="card-body">
+			<div class="card-body" style="max-height: 300px; overflow-y: auto;">
+				<ul class="users-list clearfix">
 					<?php
-					$progress = $conn->query("SELECT p.*,concat(u.firstname,' ',u.lastname) as uname,u.avatar,t.task FROM user_productivity p inner join users u on u.id = p.user_id inner join task_list t on t.id = p.task_id where p.project_id = $id order by unix_timestamp(p.date_created) desc ");
-					while ($row = $progress->fetch_assoc()) :
+					if (!empty($client_ids)) :
+						$clients = $conn->query("SELECT *,concat(firstname,' ',lastname) as name FROM users where id in ($client_ids) order by concat(firstname,' ',lastname) asc");
+						while ($row = $clients->fetch_assoc()) :
 					?>
-						<div class="post">
-
-							<div class="user-block">
-								<?php if ($_SESSION['login_id'] == $row['user_id']) : ?>
-									<span class="btn-group dropleft float-right">
-										<span class="btndropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor: pointer;">
-											<i class="fa fa-ellipsis-v"></i>
-										</span>
-										<div class="dropdown-menu">
-											<a class="dropdown-item manage_progress" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>" data-task="<?php echo $row['task'] ?>">Edit</a>
-											<div class="dropdown-divider"></div>
-											<a class="dropdown-item delete_progress" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>">Delete</a>
-										</div>
-									</span>
-								<?php endif; ?>
-								<img class="img-circle img-bordered-sm" src="assets/uploads/<?php echo $row['avatar'] ?>" alt="user image">
-								<span class="username">
-									<a href="#"><?php echo ucwords($row['uname']) ?>[ <?php echo ucwords($row['task']) ?> ]</a>
-								</span>
-								<span class="description">
-									<span class="fa fa-calendar-day"></span>
-									<span><b><?php echo date('M d, Y', strtotime($row['date'])) ?></b></span>
-									<span class="fa fa-user-clock"></span>
-									<span>Start: <b><?php echo date('h:i A', strtotime($row['date'] . ' ' . $row['start_time'])) ?></b></span>
-									<span> | </span>
-									<span>End: <b><?php echo date('h:i A', strtotime($row['date'] . ' ' . $row['end_time'])) ?></b></span>
-								</span>
-							</div>
-							<!-- /.user-block -->
-							<div>
-								<?php echo html_entity_decode($row['comment']) ?>
-							</div>
-
-							<p>
-								<!-- <a href="#" class="link-black text-sm"><i class="fas fa-link mr-1"></i> Demo File 1 v2</a> -->
-							</p>
-						</div>
-						<div class="post clearfix"></div>
-					<?php endwhile; ?>
-				</div>
+							<li>
+								<img src="assets/uploads/<?php echo $row['avatar'] ?>" alt="User Image">
+								<a class="users-list-name" href="javascript:void(0)"><?php echo ucwords($row['name']) ?></a>
+								<!-- <span class="users-list-date">Today</span> -->
+							</li>
+					<?php
+						endwhile;
+					endif;
+					?>
+				</ul>
 			</div>
 		</div>
-		<div class="col-md-6">
-			<div class="card card-outline card-success">
-				<div class="card-header">
-					<b>Discussion</b>
-					<div class="card-tools">
-						<button class="btn btn-success bg-gradient-success btn-sm" type="button" id="new_discussion"><i class="fa fa-plus"></i> New Discussion</button>
-					</div>
-				</div>
-				<div class="card-body" id="table">
+	</div>
+</div>
 
+<div class="row">
+	<div class="col-md-4">
+		<div class="card card-outline card-secondary">
+			<div class="card-header">
+				<span><b>Team Member/s:</b></span>
+				<div class="card-tools">
+					<!-- <button class="btn btn-primary bg-gradient-primary btn-sm" type="button" id="manage_team">Manage</button> -->
+				</div>
+			</div>
+			<div class="card-body" style="max-height: 300px; overflow-y: auto;">
+				<ul class="users-list clearfix">
+					<?php
+					if (!empty($user_ids)) :
+						$members = $conn->query("SELECT *,concat(firstname,' ',lastname) as name FROM users where id in ($user_ids) order by concat(firstname,' ',lastname) asc");
+						while ($row = $members->fetch_assoc()) :
+					?>
+							<li>
+								<img src="assets/uploads/<?php echo $row['avatar'] ?>" alt="User Image">
+								<a class="users-list-name" href="javascript:void(0)"><?php echo ucwords($row['name']) ?></a>
+								<!-- <span class="users-list-date">Today</span> -->
+							</li>
+					<?php
+						endwhile;
+					endif;
+					?>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-8">
+		<div class="card card-outline card-danger">
+			<div class="card-header">
+				<span><b>Ticket List:</b></span>
+				<?php if ($_SESSION['login_type'] != 3) : ?>
+					<div class="card-tools">
+						<button class="btn btn-danger bg-gradient-danger btn-sm" type="button" id="new_ticket"><i class="fa fa-plus"></i> New Ticket</button>
+					</div>
+				<?php endif; ?>
+			</div>
+			<div class="card-body p-0" style="max-height: 250px; overflow-y: auto;">
+				<div class="table-responsive">
+					<table class="table table-condensed m-0 table-hover">
+						<colgroup>
+							<col width="5%">
+							<col width="20%">
+							<col width="40%">
+							<col width="10%">
+							<col width="10%">
+							<col width="15%">
+						</colgroup>
+						<thead>
+							<th>#</th>
+							<th>Subject</th>
+							<th>Description</th>
+							<th>Type</th>
+							<th>Status</th>
+							<th>Action</th>
+						</thead>
+						<tbody>
+							<?php
+							$i = 1;
+							$tickets = $conn->query("SELECT * FROM ticket_list where project_id = {$id} order by subject asc");
+							while ($row = $tickets->fetch_assoc()) :
+								$trans = get_html_translation_table(HTML_ENTITIES, ENT_QUOTES);
+								unset($trans["\""], $trans["<"], $trans[">"], $trans["<h2"]);
+								$desc = strtr(html_entity_decode($row['description']), $trans);
+								$desc = str_replace(array("<li>", "</li>"), array("", ", "), $desc);
+							?>
+								<tr>
+									<td class="text-center"><?php echo $i++ ?></td>
+									<td class=""><b><?php echo ucwords($row['subject']) ?></b></td>
+									<td class="">
+										<p class="truncate"><?php echo strip_tags($desc) ?></p>
+									</td>
+									<td>
+										<?php
+										if ($row['type'] == 1) {
+											echo "<span class='badge badge-secondary'>Request a Change</span>";
+										} elseif ($row['type'] == 2) {
+											echo "<span class='badge badge-primary'>Report a Bug</span>";
+										} elseif ($row['type'] == 3) {
+											echo "<span class='badge badge-success'>Ask a Question</span>";
+										} elseif ($row['type'] == 4) {
+											echo "<span class='badge badge-danger'>Risk on Issue</span>";
+										}
+										?>
+									</td>
+									<td>
+										<?php
+										if ($row['status'] == 1) {
+											echo "<span class='badge badge-success'>New</span>";
+										} elseif ($row['status'] == 2) {
+											echo "<span class='badge badge-warning'>Open</span>";
+										} elseif ($row['status'] == 3) {
+											echo "<span class='badge badge-danger'>Re-Open</span>";
+										} elseif ($row['status'] == 4) {
+											echo "<span class='badge badge-primary'>Waiting Assesment</span>";
+										} elseif ($row['status'] == 5) {
+											echo "<span class='badge badge-success'>Resolved</span>";
+										} elseif ($row['status'] == 6) {
+											echo "<span class='badge badge-secondary'>Closed</span>";
+										} elseif ($row['status'] == 7) {
+											echo "<span class='badge badge-secondary'>Fixed</span>";
+										} elseif ($row['status'] == 8) {
+											echo "<span class='badge badge-secondary'>Canceled</span>";
+										}
+										?>
+									</td>
+									<td class="text-center">
+										<button type="button" class="btn btn-default btn-sm btn-flat border-info wave-effect text-info dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+											Action
+										</button>
+										<div class="dropdown-menu" style="">
+											<a class="dropdown-item view_ticket" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>" data-task="<?php echo $row['subject'] ?>">View</a>
+											<div class="dropdown-divider"></div>
+											<?php if ($_SESSION['login_type'] != 3) : ?>
+												<a class="dropdown-item edit_ticket" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>" data-task="<?php echo $row['subject'] ?>">Edit</a>
+												<div class="dropdown-divider"></div>
+												<a class="dropdown-item delete_ticket" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>">Delete</a>
+											<?php endif; ?>
+										</div>
+									</td>
+								</tr>
+							<?php
+							endwhile;
+							?>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
 	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<div class="card card-outline card-primary">
+			<div class="card-header">
+				<span><b>Task List:</b></span>
+				<?php if ($_SESSION['login_type'] != 3) : ?>
+					<div class="card-tools">
+						<button class="btn btn-primary bg-gradient-primary btn-sm" type="button" id="new_task"><i class="fa fa-plus"></i> New Task</button>
+					</div>
+				<?php endif; ?>
+			</div>
+			<div class="card-body p-0" style="max-height: 250px; overflow-y: auto;">
+				<div class="table-responsive">
+					<table class="table table-condensed m-0 table-hover">
+						<colgroup>
+							<col width="5%">
+							<col width="20%">
+							<col width="25%">
+							<col width="5%">
+							<col width="5%">
+							<col width="10%">
+							<col width="10%">
+							<col width="10%">
+							<col width="5%">
+							<col width="5%">
+						</colgroup>
+						<thead>
+							<th>#</th>
+							<th>Task</th>
+							<th>Description</th>
+							<th>Type</th>
+							<th>Priority</th>
+							<th>Start Date</th>
+							<th>Due Date</th>
+							<th>Progress</th>
+							<th>Status</th>
+							<th>Action</th>
+						</thead>
+						<tbody>
+							<?php
+							$i = 1;
+							$tasks = $conn->query("SELECT * FROM task_list where project_id = {$id} order by task asc");
+							while ($row = $tasks->fetch_assoc()) :
+								$trans = get_html_translation_table(HTML_ENTITIES, ENT_QUOTES);
+								unset($trans["\""], $trans["<"], $trans[">"], $trans["<h2"]);
+								$desc = strtr(html_entity_decode($row['description']), $trans);
+								$desc = str_replace(array("<li>", "</li>"), array("", ", "), $desc);
+							?>
+								<tr>
+									<td class="text-center"><?php echo $i++ ?></td>
+									<td class=""><b><?php echo ucwords($row['task']) ?></b></td>
+									<td class="">
+										<p class="truncate"><?php echo strip_tags($desc) ?></p>
+									</td>
+									<td>
+										<?php
+										if ($row['type'] == 1) {
+											echo "<span class='badge badge-secondary'>Change</span>";
+										} elseif ($row['type'] == 2) {
+											echo "<span class='badge badge-dark'>Plugin</span>";
+										} elseif ($row['type'] == 3) {
+											echo "<span class='badge badge-success'>Task</span>";
+										} elseif ($row['type'] == 4) {
+											echo "<span class='badge badge-danger'>Bug</span>";
+										} elseif ($row['type'] == 5) {
+											echo "<span class='badge badge-primary'>Idea</span>";
+										} elseif ($row['type'] == 6) {
+											echo "<span class='badge badge-info'>Quote</span>";
+										} elseif ($row['type'] == 7) {
+											echo "<span class='badge badge-warning'>Issue</span>";
+										}
+
+										?>
+									</td>
+									<td>
+										<?php
+										if ($row['priority'] == 1) {
+											echo "<span class='badge badge-info'>Unknown</span>";
+										} elseif ($row['priority'] == 2) {
+											echo "<span class='badge badge-primary'>Low</span>";
+										} elseif ($row['priority'] == 3) {
+											echo "<span class='badge badge-success'>Medium</span>";
+										} elseif ($row['priority'] == 4) {
+											echo "<span class='badge badge-warning'>High</span>";
+										} elseif ($row['type'] == 5) {
+											echo "<span class='badge badge-danger'>Urgent</span>";
+										}
+
+										?>
+									</td>
+									<td><span><?php echo date('M d, Y', strtotime($row['start_date'])) ?></span></td>
+									<td><span><?php echo date('M d, Y', strtotime($row['due_date'])) ?></span></td>
+									<td>
+										<div class="progress">
+											<div class="progress-bar rounded-pill
+            <?php
+								if ($row['progress'] >= 0 && $row['progress'] <= 10) {
+									echo 'bg-danger';
+								} elseif ($row['progress'] > 10 && $row['progress'] <= 30) {
+									echo 'bg-warning';
+								} elseif ($row['progress'] > 30 && $row['progress'] <= 50) {
+									echo 'bg-info';
+								} elseif ($row['progress'] > 50 && $row['progress'] <= 70) {
+									echo 'bg-primary';
+								} elseif ($row['progress'] > 70 && $row['progress'] <= 100) {
+									echo 'bg-success';
+								}
+			?>" role="progressbar" style="width: <?php echo $row['progress'] ?>%;" aria-valuenow="<?php echo $row['progress'] ?>" aria-valuemin="0" aria-valuemax="100">
+												<span class="sr-only"><?php echo $row['progress'] ?>% Complete</span>
+											</div>
+										</div>
+										<span><?php echo $row['progress'] ?>%</span>
+									</td>
+
+
+									<td>
+										<?php
+										if ($row['status'] == 1) {
+											echo "<span class='badge badge-warning'>Pending</span>";
+										} elseif ($row['status'] == 2) {
+											echo "<span class='badge badge-primary'>On-Progress</span>";
+										} elseif ($row['status'] == 3) {
+											echo "<span class='badge badge-success'>Done</span>";
+										}
+										?>
+									</td>
+									<td class="text-center">
+										<button type="button" class="btn btn-default btn-sm btn-flat border-info wave-effect text-info dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+											Action
+										</button>
+										<div class="dropdown-menu" style="">
+											<a class="dropdown-item view_task" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>" data-task="<?php echo $row['task'] ?>">View</a>
+											<div class="dropdown-divider"></div>
+											<?php if ($_SESSION['login_type'] != 3) : ?>
+												<a class="dropdown-item edit_task" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>" data-task="<?php echo $row['task'] ?>">Edit</a>
+												<div class="dropdown-divider"></div>
+												<a class="dropdown-item delete_task" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>">Delete</a>
+											<?php endif; ?>
+										</div>
+									</td>
+								</tr>
+							<?php
+							endwhile;
+							?>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6">
+		<div class="card card-outline card-warning">
+			<div class="card-header">
+				<b>Members Progress/Activity</b>
+				<div class="card-tools">
+					<button class="btn btn-warning bg-gradient-warning btn-sm" type="button" id="new_productivity"><i class="fa fa-plus"></i> New Productivity</button>
+				</div>
+			</div>
+			<div class="card-body">
+				<?php
+				$progress = $conn->query("SELECT p.*,concat(u.firstname,' ',u.lastname) as uname,u.avatar,t.task FROM user_productivity p inner join users u on u.id = p.user_id inner join task_list t on t.id = p.task_id where p.project_id = $id order by unix_timestamp(p.date_created) desc ");
+				while ($row = $progress->fetch_assoc()) :
+				?>
+					<div class="post">
+
+						<div class="user-block">
+							<?php if ($_SESSION['login_id'] == $row['user_id']) : ?>
+								<span class="btn-group dropleft float-right">
+									<span class="btndropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor: pointer;">
+										<i class="fa fa-ellipsis-v"></i>
+									</span>
+									<div class="dropdown-menu">
+										<a class="dropdown-item manage_progress" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>" data-task="<?php echo $row['task'] ?>">Edit</a>
+										<div class="dropdown-divider"></div>
+										<a class="dropdown-item delete_progress" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>">Delete</a>
+									</div>
+								</span>
+							<?php endif; ?>
+							<img class="img-circle img-bordered-sm" src="assets/uploads/<?php echo $row['avatar'] ?>" alt="user image">
+							<span class="username">
+								<a href="#"><?php echo ucwords($row['uname']) ?>[ <?php echo ucwords($row['task']) ?> ]</a>
+							</span>
+							<span class="description">
+								<span class="fa fa-calendar-day"></span>
+								<span><b><?php echo date('M d, Y', strtotime($row['date'])) ?></b></span>
+								<span class="fa fa-user-clock"></span>
+								<span>Start: <b><?php echo date('h:i A', strtotime($row['date'] . ' ' . $row['start_time'])) ?></b></span>
+								<span> | </span>
+								<span>End: <b><?php echo date('h:i A', strtotime($row['date'] . ' ' . $row['end_time'])) ?></b></span>
+							</span>
+						</div>
+						<!-- /.user-block -->
+						<div>
+							<?php echo html_entity_decode($row['comment']) ?>
+						</div>
+
+						<p>
+							<!-- <a href="#" class="link-black text-sm"><i class="fas fa-link mr-1"></i> Demo File 1 v2</a> -->
+						</p>
+					</div>
+					<div class="post clearfix"></div>
+				<?php endwhile; ?>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div class="card card-outline card-success">
+			<div class="card-header">
+				<b>Discussion</b>
+				<div class="card-tools">
+					<button class="btn btn-success bg-gradient-success btn-sm" type="button" id="new_discussion"><i class="fa fa-plus"></i> New Discussion</button>
+				</div>
+			</div>
+			<div class="card-body" id="table">
+
+			</div>
+		</div>
+	</div>
+</div>
 </div>
 <style>
 	.users-list>li img {
