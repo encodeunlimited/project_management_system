@@ -27,7 +27,7 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 ?>
 <div class="col-lg-12">
 	<div class="row">
-		<div class="col-md-9" style="max-height: 400px; overflow-y: auto;">
+		<div class="col-md-9" style="max-height: 450px; overflow-y: auto;"> 
 			<div class="callout callout-info">
 				<div class="col-md-9">
 					<div class="row">
@@ -115,6 +115,7 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 			</div>
 		</div>
 		<div class="col-md-3">
+		<div class="callout callout-warning">
 			<div class="card-header">
 				<span><b>Client/s:</b></span>
 				<div class="card-tools">

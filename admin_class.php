@@ -248,7 +248,7 @@ class Action
 		extract($_POST);
 		$data = "";
 		foreach ($_POST as $k => $v) {
-			if (!in_array($k, array('id', 'user_ids','clientids')) && !is_numeric($k)) {
+			if (!in_array($k, array('id', 'user_ids','client_ids')) && !is_numeric($k)) {
 				if ($k == 'description')
 					$v = htmlentities(str_replace("'", "&#x2019;", $v));
 				if (empty($data)) {
