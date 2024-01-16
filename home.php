@@ -144,7 +144,7 @@ if ($_SESSION['login_type'] == 2) {
             <p>Total Projects</p>
           </div>
           <div class="icon">
-            <i class="fa fa-layer-group"></i>
+            <i class="fas fa-layer-group"></i>
           </div>
         </div>
       </div>

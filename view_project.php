@@ -361,7 +361,7 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 											echo "<span class='badge badge-success'>Medium</span>";
 										} elseif ($row['priority'] == 4) {
 											echo "<span class='badge badge-warning'>High</span>";
-										} elseif ($row['type'] == 5) {
+										} elseif ($row['priority'] == 5) {
 											echo "<span class='badge badge-danger'>Urgent</span>";
 										}
 
