@@ -1,62 +1,289 @@
 <?php include 'db_connect.php' ?>
 <div class="col-md-12">
-  <div class="card card-outline card-success">
-    <div class="card-header">
-      <b>Project Progress</b>
-      <div class="card-tools">
-        <button class="btn btn-flat btn-sm bg-gradient-success btn-success" id="print"><i class="fa fa-print"></i> Print</button>
-      </div>
+    <div class="card card-outline card-success">
+        <div class="card-header">
+            <b>Project Progress</b>
+            <div class="card-tools">
+                <button class="btn btn-flat btn-sm bg-gradient-success btn-success" id="print"><i class="fa fa-print"></i> Print</button>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive" id="printable">
+                <?php $conn = new PDO('mysql:host=localhost; dbname=gantt', 'root', ''); ?>
+
+                <body class="nav-md" ng-app="angularGanttDemoApp" ng-strict-di>
+
+                    <div class="container body">
+
+
+                        <div class="main_container">
+                            <!-- /top navigation -->
+
+
+                            <!-- page content -->
+                            <div role="main">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <div class="page-title">
+                                            <div class="title_left">
+                                                <?php
+                                                $query = $conn->query("select * from project") or die(mysql_error());
+                                                $count = $query->rowcount();
+                                                ?>
+                                                <h3><i class="fa fa-line-chart"></i> Project Gantt Chart</h3>
+                                            </div>
+
+                                        </div>
+                                        <div ng-controller="MainCtrl">
+
+                                            <div class="container-content" ng-show="false">
+                                                <div class="container-fluid">
+                                                    <div class="row top-buffer">
+                                                        <div class="col-md-12">
+                                                            <i class="fa fa-cog"></i> Loading Gantt Chart...
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row top-buffer">
+                                                <div class="col-md-12">
+                                                    <div class="panel-group" bs-collapse>
+                                                        <div class="x_panel">
+                                                            <div class="panel-body">
+
+
+                                                                <div class="panel-group" bs-collapse>
+                                                                    <div class="panel panel-default">
+                                                                        <div class="panel-heading">
+                                                                            <h4 class="panel-title">
+                                                                                <a href="" bs-collapse-toggle>Options</a>
+                                                                            </h4>
+                                                                        </div>
+                                                                        <div class="panel-collapse" bs-collapse-target>
+                                                                            <div class="panel-body">
+                                                                                <div class="container-fluid">
+                                                                                    <div class="row">
+                                                                                        <div class="form-inline">
+                                                                                            <div class="form-group text-center">
+                                                                                                <label class="control-label"><i class="fa fa-search"></i> Scale</label><br>
+                                                                                                <button type="button" style="width: 6em; text-align: left" class="col-md-12 col-sm-12 col-xs-12 btn btn-default" ng-model="options.scale" bs-options="s for s in ['day', 'week', '2 weeks', 'month', 'quarter', '6 months', 'year']" bs-select></button>
+                                                                                            </div>
+                                                                                            <div class="form-group text-center">
+                                                                                                <label class="control-label"><i class="fa fa-sort"></i> Sort</label><br>
+                                                                                                <button type="button" style="width: 7em; text-align: left" class="btn btn-default" ng-model="options.sortMode" bs-options="m.value as m.label for m in [{label: 'disabled', value: undefined}, {label: 'name', value: 'model.name'}, {label: 'from', value: 'from'}, {label: 'to', value: 'to'}]" bs-select></button>
+                                                                                            </div>
+                                                                                            <div class="form-group input-append text-center">
+                                                                                                <label class="control-label"><i class="fa fa-filter"></i> Filter Tasks</label><br>
+                                                                                                <input type="text" class="form-control" style="width: 20em; text-align: left" ng-model="options.filterTask">
+                                                                                            </div>
+                                                                                            <div class="form-group input-append text-center">
+                                                                                                <label class="control-label"><i class="fa fa-filter"></i> Filter Rows</label><br>
+                                                                                                <input type="text" class="form-control" style="width: 20em; text-align: left" ng-model="options.filterRow">
+                                                                                            </div>
+                                                                                            <br>
+                                                                                            <div class="form-group text-center">
+                                                                                                <label class="control-label"><i class="fa fa-clock-o"></i> Today</label><br>
+                                                                                                <button type="button" style="width: 6em; text-align: left" class="btn btn-default" ng-model="options.currentDate" bs-options="d for d in ['none', 'line', 'column']" bs-select></button>
+                                                                                            </div>
+
+                                                                                            <div class="form-group text-center">
+                                                                                                <label class="control-label"><i class="fa fa-bars"></i> Side</label><br>
+                                                                                                <div class="btn-group" bs-checkbox-group>
+                                                                                                    <button type="button" style="width: 8em; text-align: left" class="btn btn-default" ng-model="options.sideMode" bs-options="s for s in ['Tree', 'Table', 'TreeTable']" bs-select></button>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="form-group text-center">
+                                                                                                <label class="control-label"><i class="fa fa-gear"></i> Groups</label><br>
+                                                                                                <div class="btn-group" bs-checkbox-group>
+                                                                                                    <button type="button" style="width: 8em; text-align: left" class="btn btn-default" ng-model="options.groupDisplayMode" bs-options="s for s in ['group', 'overview', 'Disabled']" bs-select></button>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="form-group text-center">
+                                                                                                <label class="control-label"><i class="fa fa-crop"></i> Layout</label><br>
+                                                                                                <div class="btn-group" bs-checkbox-group>
+                                                                                                    <button type="button" class="btn btn-default" ng-model="options.maxHeight" bs-checkbox>Height</button>
+                                                                                                    <button ng-disabled="!canAutoWidth(options.scale)" type="button" class="btn btn-default" ng-model="options.width" bs-checkbox>Width</button>
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                            <div class="form-group text-center">
+                                                                                                <label class="control-label"><i class="fa fa-search"></i> Zoom</label><br>
+                                                                                                <input ng-disabled="!options.width" type="number" ng-model="options.zoom" step="0.1" min="0.1" max="5" class="form-control" />
+                                                                                            </div>
+
+
+                                                                                            <div class="form-group text-center">
+                                                                                                <label class="control-label"><i class="fa fa-text-width"></i> Labels</label><br>
+                                                                                                <div class="btn-group" bs-checkbox-group>
+                                                                                                    <button type="button" class="btn btn-default" ng-model="options.labelsEnabled" bs-checkbox>Show</button>
+                                                                                                    <button type="button" class="btn btn-default" ng-model="options.allowSideResizing" bs-checkbox>Resizable</button>
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                            <div class="form-group text-center">
+                                                                                                <label class="control-label"><i class="fa fa-code"></i> Content</label><br>
+                                                                                                <div class="btn-group" bs-checkbox-group>
+                                                                                                    <button type="button" class="btn btn-default" ng-model="options.rowContentEnabled" bs-checkbox>Rows</button>
+                                                                                                    <button type="button" class="btn btn-default" ng-model="options.taskContentEnabled" bs-checkbox>Tasks</button>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <br>
+                                                                                            <div class="form-group text-center">
+                                                                                                <label class="control-label"><i class="fa fa-calendar"></i> <i class="fa fa-arrows-h"></i> <i class="fa fa-calendar"></i> Date range</label><br>
+                                                                                                <div class="form-group">
+                                                                                                    <input type="text" class="form-control" ng-model="options.fromDate" max-date="{{options.toDate}}" start-date="{{options.currentDateValue.toString()}}" start-week="1" placeholder="From" bs-datepicker>
+                                                                                                </div>
+                                                                                                <div class="form-group">
+                                                                                                    <input type="text" class="form-control" ng-model="options.toDate" min-date="{{options.fromDate}}" start-date="{{options.currentDateValue.toString()}}" start-week="1" placeholder="To" bs-datepicker>
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                            <div class="form-group text-center">
+                                                                                                <label class="control-label"><i class="fa fa-database"></i> Data actions</label><br>
+                                                                                                <div class="btn-group">
+                                                                                                    <button class="btn btn-default" ng-click="reload()">Reload</button>
+                                                                                                    <button class="btn btn-default" ng-click="clear()">Clear</button>
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                            <div ng-if="options.sideMode === 'Tree' || options.sideMode === 'TreeTable'" class="form-group text-center">
+                                                                                                <label class="control-label"><i class="fa fa fa-chevron-circle-right"></i> Tree actions</label><br>
+                                                                                                <div class="btn-group">
+                                                                                                    <button class="btn btn-default" ng-click="expandAll()">Expand all</button>
+                                                                                                    <button class="btn btn-default" ng-click="collapseAll()">Collapse all</button>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mtablescrolls" style="height:800px;">
+                                                                    <div gantt data="data" show-side="options.labelsEnabled" daily="options.daily" filter-task="{'name': options.filterTask}" filter-row="{'name': options.filterRow}" sort-mode="options.sortMode" view-scale="options.scale" column-width="getColumnWidth(options.width, options.scale, options.zoom)" auto-expand="options.autoExpand" task-out-of-range="options.taskOutOfRange" from-date="options.fromDate" to-date="options.toDate" allow-side-resizing="options.allowSideResizing" task-content="options.taskContentEnabled ? options.taskContent : undefined" row-content="options.rowContentEnabled ? options.rowContent : undefined" current-date="options.currentDate" current-date-value="options.currentDateValue" headers="options.width && options.shortHeaders || options.longHeaders" max-height="options.maxHeight && 300 || 0" date-frames="options.dateFrames" api="options.api" column-magnet="options.columnMagnet">
+
+
+
+                                                                        <script>
+                                                                            angular.module('angularGanttDemoApp')
+                                                                                .service('Sample', function Sample() {
+                                                                                    return {
+                                                                                        getSampleData: function() {
+                                                                                            return [
+                                                                                                <?php
+                                                                                                $query = $conn->query("select * from project");
+                                                                                                while ($row = $query->fetch()) {
+                                                                                                    $projectid = $row['project_id'];
+                                                                                                    $project_name = $row['project_name'];
+
+                                                                                                ?>
+
+                                                                                                    {
+                                                                                                        name: "<?php echo $project_name; ?>",
+                                                                                                        height: '3em',
+                                                                                                        color: '#00006B',
+                                                                                                        children: [
+                                                                                                            <?php
+                                                                                                            $query12 = $conn->query("select * from punchlist LEFT JOIN project ON punchlist.project_id = project.project_id where punchlist.project_id='$projectid' ORDER BY punchlist_id ASC");
+                                                                                                            while ($row12 = $query12->fetch()) {
+                                                                                                                $checklist = $row12['description'];
+                                                                                                            ?>
+                                                                                                                <?php echo '"' . $checklist . '"' . ","; ?>
+                                                                                                            <?php } ?>
+                                                                                                        ],
+                                                                                                        content: '<i class="fa fa-file-code-o" ng-click="scope.handleRowIconClick(row.model)"></i> {{row.model.name}}'
+                                                                                                    },
+                                                                                                    <?php
+                                                                                                    $query123 = $conn->query("select * from punchlist LEFT JOIN project ON punchlist.project_id = project.project_id where punchlist.project_id ='$projectid' ORDER BY punchlist_id ASC");
+                                                                                                    while ($row123 = $query123->fetch()) {
+                                                                                                        $punchlist_id = $row123['punchlist_id'];
+                                                                                                        $checklist = $row123['description'];
+                                                                                                        $progress = $row123['progress'];
+                                                                                                        $clstart_date = date('Y/m/d', strtotime($row123["start_date"]));
+
+                                                                                                        $clend_date = date('Y/m/d', strtotime($row123["end_date"]));
+
+                                                                                                    ?>
+
+                                                                                                        {
+                                                                                                            name: "<?php echo $checklist; ?>",
+                                                                                                            tooltips: true,
+                                                                                                            tasks: [{
+                                                                                                                name: "<?php echo $checklist; ?> - <?php echo $progress; ?>%",
+                                                                                                                color: '#F1C232',
+                                                                                                                from: new Date("<?php echo $clstart_date; ?>"),
+                                                                                                                to: new Date("<?php echo $clend_date; ?>"),
+                                                                                                                progress: "<?php echo $progress; ?>"
+                                                                                                            }]
+                                                                                                        },
+                                                                                                    <?php } ?>
+                                                                                                <?php } ?>
+
+                                                                                            ];
+                                                                                        },
+                                                                                    };
+                                                                                });
+                                                                        </script>
+
+                                                                        <gantt-tree enabled="options.sideMode === 'Tree' || options.sideMode === 'TreeTable'" header-content="options.treeHeaderContent" keep-ancestor-on-filter-row="true">
+                                                                        </gantt-tree>
+                                                                        <gantt-table enabled="options.sideMode === 'Table' || options.sideMode === 'TreeTable'" columns="options.sideMode === 'TreeTable' ? options.treeTableColumns : options.columns" headers="options.columnsHeaders" classes="options.columnsClasses" formatters="options.columnsFormatters" contents="options.columnsContents" header-contents="options.columnsHeaderContents">
+                                                                        </gantt-table>
+                                                                        <gantt-groups enabled="options.groupDisplayMode === 'group' || options.groupDisplayMode === 'overview' || options.groupDisplayMode === 'promote'" display="options.groupDisplayMode"></gantt-groups>
+                                                                        <gantt-tooltips></gantt-tooltips>
+                                                                        <gantt-bounds></gantt-bounds>
+                                                                        <gantt-progress></gantt-progress>
+                                                                        <gantt-sortable></gantt-sortable>
+                                                                        <gantt-movable enabled="!options.readOnly"></gantt-movable>
+                                                                        <gantt-draw-task enabled="options.canDraw" move-threshold="2" task-factory="options.drawTaskFactory">
+                                                                        </gantt-draw-task>
+                                                                        <gantt-overlap></gantt-overlap>
+                                                                        <gantt-resize-sensor></gantt-resize-sensor>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /page content -->
+
+            </div>
+
+        </div>
+
+        </body>
+
+        </html>
+
+
     </div>
-    <div class="card-body p-0">
-      <div class="table-responsive" id="printable">
-        <?php
-        // Assuming you have fetched the project and task data from the database
-
-        // Sample project and task data
-        $projects = [
-          ['id' => 1, 'name' => 'Project A', 'start_date' => '2023-01-01', 'end_date' => '2023-02-01'],
-          ['id' => 2, 'name' => 'Project B', 'start_date' => '2023-02-15', 'end_date' => '2023-03-15']
-        ];
-
-        $tasks = [
-          ['id' => 1, 'project_id' => 1, 'task' => 'Task 1', 'start_date' => '2023-01-05', 'due_date' => '2023-01-15'],
-          ['id' => 2, 'project_id' => 1, 'task' => 'Task 2', 'start_date' => '2023-01-10', 'due_date' => '2023-01-25'],
-          ['id' => 3, 'project_id' => 2, 'task' => 'Task 1', 'start_date' => '2023-02-20', 'due_date' => '2023-03-05']
-        ];
-
-        // Generate Gantt chart
-        echo '<html><head><script src="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.6.1/frappe-gantt.js"></script></head><body>';
-        echo '<div id="gantt"></div>';
-        echo '<script>';
-        echo 'var tasks = [';
-        foreach ($tasks as $task) {
-          echo '{id: ' . $task['id'] . ', name: "' . $task['task'] . '", start: "' . $task['start_date'] . '", end: "' . $task['due_date'] . '", progress: 100},';
-        }
-        echo '];';
-        echo 'var gantt = new Gantt("#gantt", tasks);';
-        echo '</script>';
-        echo '</body></html>';
-        ?>
-
-      </div>
-    </div>
-  </div>
+</div>
+</div>
 </div>
 <script>
-  $('#print').click(function() {
-    start_load()
-    var _h = $('head').clone()
-    var _p = $('#printable').clone()
-    var _d = "<p class='text-center'><b>Project Progress Report as of (<?php echo date("F d, Y") ?>)</b></p>"
-    _p.prepend(_d)
-    _p.prepend(_h)
-    var nw = window.open("", "", "width=900,height=600")
-    nw.document.write(_p.html())
-    nw.document.close()
-    nw.print()
-    setTimeout(function() {
-      nw.close()
-      end_load()
-    }, 750)
-  })
+    $('#print').click(function() {
+        start_load()
+        var _h = $('head').clone()
+        var _p = $('#printable').clone()
+        var _d = "<p class='text-center'><b>Project Progress Report as of (<?php echo date("F d, Y") ?>)</b></p>"
+        _p.prepend(_d)
+        _p.prepend(_h)
+        var nw = window.open("", "", "width=900,height=600")
+        nw.document.write(_p.html())
+        nw.document.close()
+        nw.print()
+        setTimeout(function() {
+            nw.close()
+            end_load()
+        }, 750)
+    })
 </script>

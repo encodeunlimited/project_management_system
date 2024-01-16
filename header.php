@@ -44,6 +44,17 @@
  <!-- summernote -->
   <link rel="stylesheet" href="assets/plugins/summernote/summernote-bs4.min.css">
 
+
+  <!-- //report -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/animate.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="gantt/vendor.css">
+
+                <script src="gantt/vendor.js"></script>
+
+                <script src="gantt/scripts.js"></script>
+
   <style>
     body {
       background-image: url('assets\img\bg.jpg'); /* "C:\xampp\htdocs\project_management_system\assets\img\bg.jpg" */
