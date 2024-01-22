@@ -33,5 +33,5 @@ while ($row = $progress->fetch_assoc()) :
             <!-- <a href="#" class="link-black text-sm"><i class="fas fa-link mr-1"></i> Demo File 1 v2</a> -->
         </p>
     </div>
-    <div class="post clearfix"></div>
+    <!-- <div class="post clearfix"></div> -->
 <?php endwhile; ?>
