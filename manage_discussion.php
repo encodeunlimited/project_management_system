@@ -14,26 +14,26 @@ if(isset($_GET['id'])){
 					<?php if(!isset($_GET['tid'])): ?>
 					 <div class="form-group">
 		              <label for="" class="control-label">Discussion</label>
-		              <select class="form-control form-control-sm select2" name="task_id">
+		              <select required class="form-control form-control-sm select2" name="task_id">
 		              	<option></option>
 		              	<?php 
 		              	$tasks = $conn->query("SELECT * FROM task_list where project_id = {$_GET['pid']} order by task asc ");
 		              	while($row= $tasks->fetch_assoc()):
 		              	?>
-		              	<option value="<?php echo $row['id'] ?>" <?php echo isset($task_id) && $task_id == $row['id'] ? "selected" : '' ?>><?php echo ucwords($row['task']) ?></option>
+		              	<option required value="<?php echo $row['id'] ?>" <?php echo isset($task_id) && $task_id == $row['id'] ? "selected" : '' ?>><?php echo ucwords($row['task']) ?></option>
 		              	<?php endwhile; ?>
 		              </select>
 		            </div>
 		            <?php else: ?>
-					<input type="hidden" name="task_id" value="<?php echo isset($_GET['tid']) ? $_GET['tid'] : '' ?>">
+					<input  type="hidden" name="task_id"  value="<?php echo isset($_GET['tid']) ? $_GET['tid'] : '' ?>">
 		            <?php endif; ?>
 					<div class="form-group">
 						<label for="">Subject</label>
-						<input type="text" class="form-control form-control-sm" name="subject" value="<?php echo isset($subject) ? $subject : '' ?>" required>
+						<input type="text" class="form-control form-control-sm" name="subject" required value="<?php echo isset($subject) ? $subject : '' ?>" required>
 					</div>
 					<div class="form-group">
 						<label for="">Comment/Progress Description</label>
-						<textarea name="comment" id="" cols="30" rows="10" class="summernote form-control" required="">
+						<textarea required name="comment" id="" cols="30" rows="10" class="summernote form-control" required="">
 							<?php echo isset($comment) ? $comment : '' ?>
 						</textarea>
 					</div>

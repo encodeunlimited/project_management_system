@@ -1,4 +1,4 @@
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <aside class="main-sidebar sidebar-dark-primary elevation-6">
     <div class="dropdown">
    	<a href="./" class="brand-link">
         <?php if($_SESSION['login_type'] == 1): ?>
@@ -55,10 +55,27 @@
           </li>
           <?php if($_SESSION['login_type'] != 3): ?>
            <li class="nav-item">
-                <a href="./index.php?page=reports" class="nav-link nav-reports">
-                  <i class="fas fa-th-list nav-icon"></i>
-                  <p>Report</p>
+           <a href="#" class="nav-link nav-reports">
+              <i class="fas fa-th-list nav-icon"></i>
+              <p>
+              Report
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="http://localhost/pgc" class="nav-link nav-new_user tree-item" target="_blank">
+                  <i class="fas fa-angle-right nav-icon"></i>
+                  <p>Grant Chart</p>
                 </a>
+              </li>
+              <li class="nav-item">
+                <a href="./index.php?page=copy_reports" class="nav-link nav-user_list tree-item" >
+                  <i class="fas fa-angle-right nav-icon"></i>
+                  <p>Other</p>
+                </a>
+              </li>
+            </ul>
           </li>
           <?php endif; ?>
           <?php if($_SESSION['login_type'] == 1): ?>

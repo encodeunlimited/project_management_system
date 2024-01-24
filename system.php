@@ -17,9 +17,9 @@ while ($row = $progress->fetch_assoc()) :
                 <a href="#"><?php echo ucwords($row['uname']) ?>[ <?php echo ucwords($row['task']) ?> ][ <?php echo ucwords($row['subject']) ?> ]</a>
             </span>
             <span class="description">
-                <span class="fa fa-calendar-day"></span>
+                <span class="fa fa-calendar"></span>
                 <span><b><?php echo date('M d, Y', strtotime($row['date_created'])) ?></b></span>
-                <span class="fa fa-user-clock"></span>
+                <span class="fa fa-clock-o"></span>
                 <span><b><?php echo date('h:i A', strtotime($row['date_created'])) ?></b></span>
                 
             </span>

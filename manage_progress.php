@@ -23,7 +23,7 @@ if(isset($_GET['id'])){
 		              	$tasks = $conn->query("SELECT * FROM task_list where project_id = {$_GET['pid']} order by task asc ");
 		              	while($row= $tasks->fetch_assoc()):
 		              	?>
-		              	<option value="<?php echo $row['id'] ?>" <?php echo isset($task_id) && $task_id == $row['id'] ? "selected" : '' ?>><?php echo ucwords($row['task']) ?></option>
+		              	<option required value="<?php echo $row['id'] ?>" <?php echo isset($task_id) && $task_id == $row['id'] ? "selected" : '' ?>><?php echo ucwords($row['task']) ?></option>
 		              	<?php endwhile; ?>
 		              </select>
 		            </div>
@@ -32,25 +32,25 @@ if(isset($_GET['id'])){
 		            <?php endif; ?>
 					<div class="form-group">
 						<label for="">Subject</label>
-						<input type="text" class="form-control form-control-sm" name="subject" value="<?php echo isset($subject) ? $subject : '' ?>" required>
+						<input type="text" class="form-control form-control-sm" name="subject" required value="<?php echo isset($subject) ? $subject : '' ?>" required>
 					</div>
 					<div class="form-group">
 						<label for="">Date</label>
-						<input type="date" class="form-control form-control-sm" name="date" value="<?php echo isset($date) ? date("Y-m-d",strtotime($date)) : '' ?>" required>
+						<input type="date" class="form-control form-control-sm" name="date" required value="<?php echo isset($date) ? date("Y-m-d",strtotime($date)) : '' ?>" required>
 					</div>
 					<div class="form-group">
 						<label for="">Start Time</label>
-						<input type="time" class="form-control form-control-sm" name="start_time" value="<?php echo isset($start_time) ? date("H:i",strtotime("2020-01-01 ".$start_time)) : '' ?>" required>
+						<input type="time" class="form-control form-control-sm" name="start_time" required value="<?php echo isset($start_time) ? date("H:i",strtotime("2020-01-01 ".$start_time)) : '' ?>" required>
 					</div>
 					<div class="form-group">
 						<label for="">End Time</label>
-						<input type="time" class="form-control form-control-sm" name="end_time" value="<?php echo isset($end_time) ? date("H:i",strtotime("2020-01-01 ".$end_time)) : '' ?>" required>
+						<input type="time" class="form-control form-control-sm" name="end_time" required value="<?php echo isset($end_time) ? date("H:i",strtotime("2020-01-01 ".$end_time)) : '' ?>" required>
 					</div>
 				</div>
 				<div class="col-md-7">
 					<div class="form-group">
 						<label for="">Comment/Progress Description</label>
-						<textarea name="comment" id="" cols="30" rows="10" class="summernote form-control" required="">
+						<textarea required name="comment" id="" cols="30" rows="10" class="summernote form-control" required="">
 							<?php echo isset($comment) ? $comment : '' ?>
 						</textarea>
 					</div>

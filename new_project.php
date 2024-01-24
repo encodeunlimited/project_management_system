@@ -12,7 +12,7 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="" class="control-label">Name</label>
-							<input type="text" class="form-control form-control-sm" name="name" value="<?php echo isset($name) ? $name : '' ?>">
+							<input type="text" class="form-control form-control-sm" name="name" required value="<?php echo isset($name) ? $name : '' ?>">
 						</div>
 					</div>
 					<div class="col-md-6">
@@ -30,13 +30,13 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="" class="control-label">Start Date</label>
-							<input type="date" class="form-control form-control-sm" autocomplete="off" name="start_date" value="<?php echo isset($start_date) ? date("Y-m-d", strtotime($start_date)) : '' ?>">
+							<input type="date" class="form-control form-control-sm" autocomplete="off" name="start_date" required value="<?php echo isset($start_date) ? date("Y-m-d", strtotime($start_date)) : '' ?>">
 						</div>
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="" class="control-label">Review Brief Date</label>
-							<input type="date" class="form-control form-control-sm" autocomplete="off" name="review_brief_date" value="<?php echo isset($review_brief_date) ? date("Y-m-d", strtotime($review_brief_date)) : '' ?>">
+							<input type="date" class="form-control form-control-sm" autocomplete="off" name="review_brief_date" required value="<?php echo isset($review_brief_date) ? date("Y-m-d", strtotime($review_brief_date)) : '' ?>">
 						</div>
 					</div>
 				</div>
@@ -44,13 +44,13 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="" class="control-label">Design Date</label>
-							<input type="date" class="form-control form-control-sm" autocomplete="off" name="design_date" value="<?php echo isset($design_date) ? date("Y-m-d", strtotime($design_date)) : '' ?>">
+							<input type="date" class="form-control form-control-sm" autocomplete="off" name="design_date" required value="<?php echo isset($design_date) ? date("Y-m-d", strtotime($design_date)) : '' ?>">
 						</div>
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="" class="control-label">Development Date</label>
-							<input type="date" class="form-control form-control-sm" autocomplete="off" name="development_date" value="<?php echo isset($development_date) ? date("Y-m-d", strtotime($development_date)) : '' ?>">
+							<input type="date" class="form-control form-control-sm" autocomplete="off" name="development_date" required value="<?php echo isset($development_date) ? date("Y-m-d", strtotime($development_date)) : '' ?>">
 						</div>
 					</div>
 				</div>
@@ -58,13 +58,13 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="" class="control-label">Site Test Date</label>
-							<input type="date" class="form-control form-control-sm" autocomplete="off" name="site_test_date" value="<?php echo isset($site_test_date) ? date("Y-m-d", strtotime($site_test_date)) : '' ?>">
+							<input type="date" class="form-control form-control-sm" autocomplete="off" name="site_test_date" required value="<?php echo isset($site_test_date) ? date("Y-m-d", strtotime($site_test_date)) : '' ?>">
 						</div>
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="" class="control-label">UAT Date</label>
-							<input type="date" class="form-control form-control-sm" autocomplete="off" name="uat_date" value="<?php echo isset($uat_date) ? date("Y-m-d", strtotime($uat_date)) : '' ?>">
+							<input type="date" class="form-control form-control-sm" autocomplete="off" name="uat_date" required value="<?php echo isset($uat_date) ? date("Y-m-d", strtotime($uat_date)) : '' ?>">
 						</div>
 					</div>
 				</div>
@@ -78,7 +78,7 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="" class="control-label">End Date</label>
-							<input type="date" class="form-control form-control-sm" autocomplete="off" name="end_date" value="<?php echo isset($end_date) ? date("Y-m-d", strtotime($end_date)) : '' ?>">
+							<input type="date" class="form-control form-control-sm" autocomplete="off" name="end_date" required value="<?php echo isset($end_date) ? date("Y-m-d", strtotime($end_date)) : '' ?>">
 						</div>
 					</div>
 				</div>
@@ -87,13 +87,13 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label for="" class="control-label">Project Manager</label>
-								<select class="form-control form-control-sm select2" name="manager_id" id="manager_id">
+								<select required class="form-control form-control-sm select2" name="manager_id" id="manager_id">
 									<option></option>
 									<?php
 									$managers = $conn->query("SELECT *,concat(firstname,' ',lastname) as name FROM users where type = 2 order by concat(firstname,' ',lastname) asc ");
 									while ($row = $managers->fetch_assoc()) :
 									?>
-										<option value="<?php echo $row['id'] ?>" data-email="<?php echo $row['email'] ?>" <?php echo isset($manager_id) && $manager_id == $row['id'] ? "selected" : '' ?>><?php echo ucwords($row['name']) ?></option>
+										<option required value="<?php echo $row['id'] ?>" data-email="<?php echo $row['email'] ?>" <?php echo isset($manager_id) && $manager_id == $row['id'] ? "selected" : '' ?>><?php echo ucwords($row['name']) ?></option>
 									<?php endwhile; ?>
 								</select>
 							</div>
@@ -104,13 +104,13 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="" class="control-label">Project Team Members</label>
-							<select class="form-control form-control-sm select2" multiple="multiple" name="user_ids[]" id="user_ids">
+							<select required class="form-control form-control-sm select2" multiple="multiple" name="user_ids[]" id="user_ids">
 								<option></option>
 								<?php
 								$employees = $conn->query("SELECT *,concat(firstname,' ',lastname) as name FROM users where type = 3 order by concat(firstname,' ',lastname) asc ");
 								while ($row = $employees->fetch_assoc()) :
 								?>
-									<option value="<?php echo $row['id'] ?>" data-email="<?php echo $row['email'] ?>" <?php echo isset($user_ids) && in_array($row['id'], explode(',', $user_ids)) ? "selected" : '' ?>><?php echo ucwords($row['name']) ?></option>
+									<option required value="<?php echo $row['id'] ?>" data-email="<?php echo $row['email'] ?>" <?php echo isset($user_ids) && in_array($row['id'], explode(',', $user_ids)) ? "selected" : '' ?>><?php echo ucwords($row['name']) ?></option>
 								<?php endwhile; ?>
 							</select>
 
@@ -121,13 +121,13 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="" class="control-label">Project Clients</label>
-							<select class="form-control form-control-sm select2" multiple="multiple" name="client_ids[]" id="client_ids">
+							<select required class="form-control form-control-sm select2" multiple="multiple" name="client_ids[]" id="client_ids">
 								<option></option>
 								<?php
 								$clients = $conn->query("SELECT *,concat(firstname,' ',lastname) as name FROM users where type = 4 order by concat(firstname,' ',lastname) asc ");
 								while ($row = $clients->fetch_assoc()) :
 								?>
-									<option value="<?php echo $row['id'] ?>" data-email="<?php echo $row['email'] ?>" <?php echo isset($client_ids) && in_array($row['id'], explode(',', $client_ids)) ? "selected" : '' ?>><?php echo ucwords($row['name']) ?></option>
+									<option required value="<?php echo $row['id'] ?>" data-email="<?php echo $row['email'] ?>" <?php echo isset($client_ids) && in_array($row['id'], explode(',', $client_ids)) ? "selected" : '' ?>><?php echo ucwords($row['name']) ?></option>
 								<?php endwhile; ?>
 							</select>
 						</div>
@@ -137,7 +137,7 @@
 					<div class="col-md-10">
 						<div class="form-group">
 							<label for="" class="control-label">Description</label>
-							<textarea name="description" id="" cols="30" rows="10" class="summernote form-control">
+							<textarea name="description" id="" cols="30" rows="10" required class="summernote form-control">
 						<?php echo isset($description) ? $description : '' ?>
 					</textarea>
 						</div>

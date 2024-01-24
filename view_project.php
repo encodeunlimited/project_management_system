@@ -462,9 +462,9 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 									<a href="#"><?php echo ucwords($row['uname']) ?>[ <?php echo ucwords($row['task']) ?> ]</a>
 								</span>
 								<span class="description">
-									<span class="fa fa-calendar-day"></span>
+									<span class="fa fa-calendar"></span>
 									<span><b><?php echo date('M d, Y', strtotime($row['date'])) ?></b></span>
-									<span class="fa fa-user-clock"></span>
+									<span class="fa fa-clock-o"></span>
 									<span>Start: <b><?php echo date('h:i A', strtotime($row['date'] . ' ' . $row['start_time'])) ?></b></span>
 									<span> | </span>
 									<span>End: <b><?php echo date('h:i A', strtotime($row['date'] . ' ' . $row['end_time'])) ?></b></span>

@@ -13,17 +13,17 @@ if (isset($_GET['id'])) {
 		<input type="hidden" name="project_id" value="<?php echo isset($_GET['pid']) ? $_GET['pid'] : '' ?>">
 		<div class="form-group">
 			<label for="">Task</label>
-			<input type="text" class="form-control form-control-sm" name="task" value="<?php echo isset($task) ? $task : '' ?>" required>
+			<input type="text" class="form-control form-control-sm" name="task" required value="<?php echo isset($task) ? $task : '' ?>" required>
 		</div>
 		<div class="form-group">
 			<label for="">Description</label>
-			<textarea name="description" id="" cols="30" rows="10" class="summernote form-control">
+			<textarea required name="description" id="" cols="30" rows="10" class="summernote form-control">
 				<?php echo isset($description) ? $description : '' ?>
 			</textarea>
 		</div>
 		<div class="form-group">
 			<label for="">Type</label>
-			<select name="type" id="type" class="custom-select custom-select-sm">
+			<select required name="type" id="type" class="custom-select custom-select-sm">
 				<option value="1" <?php echo isset($type) && $type == 1 ? 'selected' : '' ?>>Change</option>
 				<option value="2" <?php echo isset($type) && $type == 2 ? 'selected' : '' ?>>Plugin</option>
 				<option value="3" <?php echo isset($type) && $type == 3 ? 'selected' : '' ?>>Task</option>
@@ -35,7 +35,7 @@ if (isset($_GET['id'])) {
 		</div>
 		<div class="form-group">
 			<label for="">Priority</label>
-			<select name="priority" id="priority" class="custom-select custom-select-sm">
+			<select required name="priority" id="priority" class="custom-select custom-select-sm">
 				<option value="1" <?php echo isset($priority) && $priority == 1 ? 'selected' : '' ?>>Unknown</option>
 				<option value="2" <?php echo isset($priority) && $priority == 2 ? 'selected' : '' ?>>Low</option>
 				<option value="3" <?php echo isset($priority) && $priority == 3 ? 'selected' : '' ?>>Medium</option>
@@ -45,15 +45,15 @@ if (isset($_GET['id'])) {
 		</div>
 		<div class="form-group">
 			<label for="" class="control-label">Start Date</label>
-			<input type="date" class="form-control form-control-sm" autocomplete="off" name="start_date" value="<?php echo isset($start_date) ? date("Y-m-d", strtotime($start_date)) : '' ?>">
+			<input type="date" class="form-control form-control-sm" autocomplete="off" name="start_date" required value="<?php echo isset($start_date) ? date("Y-m-d", strtotime($start_date)) : '' ?>">
 		</div>
 		<div class="form-group">
 			<label for="" class="control-label">Due Date</label>
-			<input type="date" class="form-control form-control-sm" autocomplete="off" name="due_date" value="<?php echo isset($due_date) ? date("Y-m-d", strtotime($due_date)) : '' ?>">
+			<input type="date" class="form-control form-control-sm" autocomplete="off" name="due_date" required value="<?php echo isset($due_date) ? date("Y-m-d", strtotime($due_date)) : '' ?>">
 		</div>
 		<div class="form-group">
 			<label for="" class="control-label">Progress</label>
-			<input type="range" class="form-control-range" ... ... name="progress" min="0" max="100" value="<?php echo isset($progress) ? $progress : '0' ?>" oninput="updateProgressValue(this.value)">
+			<input type="range" class="form-control-range" ... ... name="progress" min="0" max="100" required value="<?php echo isset($progress) ? $progress : '0' ?>" oninput="updateProgressValue(this.value)">
 			<output for="progress"><?php echo isset($progress) ? $progress : '0' ?>%</output>
 		</div>
 
@@ -66,7 +66,7 @@ if (isset($_GET['id'])) {
 
 		<div class="form-group">
 			<label for="">Status</label>
-			<select name="status" id="status" class="custom-select custom-select-sm">
+			<select required name="status" id="status" class="custom-select custom-select-sm">
 				<option value="1" <?php echo isset($status) && $status == 1 ? 'selected' : '' ?>>Pending</option>
 				<option value="2" <?php echo isset($status) && $status == 2 ? 'selected' : '' ?>>On-Progress</option>
 				<option value="3" <?php echo isset($status) && $status == 3 ? 'selected' : '' ?>>Done</option>

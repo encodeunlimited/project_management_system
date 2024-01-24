@@ -13,17 +13,17 @@ if (isset($_GET['id'])) {
 		<input type="hidden" name="project_id" value="<?php echo isset($_GET['pid']) ? $_GET['pid'] : '' ?>">
 		<div class="form-group">
 			<label for="">Subject</label>
-			<input type="text" class="form-control form-control-sm" name="subject" value="<?php echo isset($subject) ? $subject : '' ?>" required>
+			<input type="text" class="form-control form-control-sm" name="subject" required value="<?php echo isset($subject) ? $subject : '' ?>" required>
 		</div>
 		<div class="form-group">
 			<label for="">Description</label>
-			<textarea name="description" id="" cols="30" rows="10" class="summernote form-control">
+			<textarea name="description" id="" cols="30" rows="10" required class="summernote form-control">
 				<?php echo isset($description) ? $description : '' ?>
 			</textarea>
 		</div>
 		<div class="form-group">
 			<label for="">Type</label>
-			<select name="type" id="type" class="custom-select custom-select-sm">
+			<select required name="type" id="type" class="custom-select custom-select-sm">
 				<option value="1" <?php echo isset($type) && $type == 1 ? 'selected' : '' ?>>Request a Change</option>
 				<option value="2" <?php echo isset($type) && $type == 2 ? 'selected' : '' ?>>Report a Bug</option>
 				<option value="3" <?php echo isset($type) && $type == 3 ? 'selected' : '' ?>>Ask a Question</option>
@@ -32,7 +32,7 @@ if (isset($_GET['id'])) {
 		</div>
 		<div class="form-group">
 			<label for="">Status</label>
-			<select name="status" id="status" class="custom-select custom-select-sm">
+			<select required name="status" id="status" class="custom-select custom-select-sm">
 				<option value="1" <?php echo isset($status) && $status == 1 ? 'selected' : '' ?>>New</option>
 				<option value="2" <?php echo isset($status) && $status == 2 ? 'selected' : '' ?>>Open</option>
 				<option value="3" <?php echo isset($status) && $status == 3 ? 'selected' : '' ?>>Re-Open</option>
