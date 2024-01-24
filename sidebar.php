@@ -64,13 +64,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="http://localhost/pgc" class="nav-link nav-new_user tree-item" target="_blank">
+                <a href="http://localhost/project_management_system/pgc?page=greports" class="nav-link nav-greports tree-item" target="_blank">
                   <i class="fas fa-angle-right nav-icon"></i>
                   <p>Grant Chart</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="./index.php?page=copy_reports" class="nav-link nav-user_list tree-item" >
+                <a href="./index.php?page=copy_reports" class="nav-link nav-copy_reports tree-item" >
                   <i class="fas fa-angle-right nav-icon"></i>
                   <p>Other</p>
                 </a>

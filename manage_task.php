@@ -72,12 +72,17 @@ if (isset($_GET['id'])) {
 				<option value="3" <?php echo isset($status) && $status == 3 ? 'selected' : '' ?>>Done</option>
 			</select>
 		</div>
+
+		<div class="col-lg-12 text-right justify-content-center d-flex">
+			<button class="btn btn-primary mr-2">Save</button>
+			<button class="btn btn-secondary" type="button" onclick="$('#uni_modal').modal('hide')">Cancel</button>
+			
+		</div>
 	</form>
 </div>
 
 <script>
 	$(document).ready(function() {
-
 
 		$('.summernote').summernote({
 			height: 200,

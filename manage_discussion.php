@@ -37,6 +37,11 @@ if(isset($_GET['id'])){
 							<?php echo isset($comment) ? $comment : '' ?>
 						</textarea>
 					</div>
+					<div class="col-lg-12 text-right justify-content-center d-flex">
+			<button class="btn btn-primary mr-2">Save</button>
+			<button class="btn btn-secondary" type="button" onclick="$('#uni_modal').modal('hide')">Cancel</button>
+			
+		</div>
 	</form>
 </div>
 
@@ -60,20 +65,6 @@ if(isset($_GET['id'])){
 	    width: "100%"
 	  });
      })
-
-	 function validateForm() {
-            var isValid = true;
-            $('#manage-discussion input[required], #manage-discussion textarea[required]').each(function() {
-                if ($.trim($(this).val()) == '') {
-                    isValid = false;
-                    $(this).addClass('is-invalid');
-                }
-                else {
-                    $(this).removeClass('is-invalid');
-                }
-            });
-            return isValid;
-        }
 
 
     $('#manage-discussion').submit(function(e){

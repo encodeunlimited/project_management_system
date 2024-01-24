@@ -114,18 +114,4 @@ if (isset($_GET['id'])) {
 			});
 		}
 	});
-
-	function validateForm() {
-		var isValid = true;
-		$('#manage-user input').each(function() {
-			if ($.trim($(this).val()) == '') {
-				isValid = false;
-				return false; // exit the loop early
-			}
-		});
-		if (!isValid) {
-			$('#msg').html('<div class="alert alert-danger">Please fill in all fields</div>');
-		}
-		return isValid;
-	}
 </script>

@@ -514,37 +514,45 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 	.truncate {
 		-webkit-line-clamp: 1 !important;
 	}
+
+	#uni_modal .modal-footer {
+		display: none;
+	}
+
+	#uni_modal .modal-footer.display {
+		display: flex
+	}
 </style>
 <script>
 	$('#new_ticket').click(function() {
-		uni_modal("New Ticket For <?php echo ucwords($name) ?>", "manage_ticket.php?pid=<?php echo $id ?>", "mid-large")
+		uni_modal("New Ticket For <?php echo ucwords($name) ?>", "manage_ticket.php?pid=<?php echo $id ?>", "mid-large", false, false, false)
 	})
 	$('.edit_ticket').click(function() {
-		uni_modal("Edit Ticket: " + $(this).attr('data-task'), "manage_ticket.php?pid=<?php echo $id ?>&id=" + $(this).attr('data-id'), "mid-large")
+		uni_modal("Edit Ticket: " + $(this).attr('data-task'), "manage_ticket.php?pid=<?php echo $id ?>&id=" + $(this).attr('data-id'), "mid-large", false, false, false)
 	})
 	$('.view_ticket').click(function() {
-		uni_modal("Ticket Details", "view_ticket.php?id=" + $(this).attr('data-id'), "mid-large")
+		uni_modal("Ticket Details", "view_ticket.php?id=" + $(this).attr('data-id'), "mid-large", false, false, false)
 	})
 	$('#new_task').click(function() {
-		uni_modal("New Task For <?php echo ucwords($name) ?>", "manage_task.php?pid=<?php echo $id ?>", "mid-large")
+		uni_modal("New Task For <?php echo ucwords($name) ?>", "manage_task.php?pid=<?php echo $id ?>", "mid-large", false, false, false)
 	})
 	$('.edit_task').click(function() {
-		uni_modal("Edit Task: " + $(this).attr('data-task'), "manage_task.php?pid=<?php echo $id ?>&id=" + $(this).attr('data-id'), "mid-large")
+		uni_modal("Edit Task: " + $(this).attr('data-task'), "manage_task.php?pid=<?php echo $id ?>&id=" + $(this).attr('data-id'), "mid-large", false, false, false)
 	})
 	$('.view_task').click(function() {
-		uni_modal("Task Details", "view_task.php?id=" + $(this).attr('data-id'), "mid-large")
+		uni_modal("Task Details", "view_task.php?id=" + $(this).attr('data-id'), "mid-large", false, false, false)
 	})
 	$('#new_productivity').click(function() {
-		uni_modal("<i class='fa fa-plus'></i> New Progress", "manage_progress.php?pid=<?php echo $id ?>", 'large')
+		uni_modal("<i class='fa fa-plus'></i> New Progress", "manage_progress.php?pid=<?php echo $id ?>", "mid-large", false, false, false)
 	})
 	$('.manage_progress').click(function() {
-		uni_modal("<i class='fa fa-edit'></i> Edit Progress", "manage_progress.php?pid=<?php echo $id ?>&id=" + $(this).attr('data-id'), 'large')
+		uni_modal("<i class='fa fa-edit'></i> Edit Progress", "manage_progress.php?pid=<?php echo $id ?>&id=" + $(this).attr('data-id'), 'mid-large', false, false, false)
 	})
 	$('.delete_progress').click(function() {
 		_conf("Are you sure to delete this progress?", "delete_progress", [$(this).attr('data-id')])
 	})
 	$('#new_discussion').click(function() {
-		uni_modal("<i class='fa fa-plus'></i> New Discussion", "manage_discussion.php?pid=<?php echo $id ?>", 'large')
+		uni_modal("<i class='fa fa-plus'></i> New Discussion", "manage_discussion.php?pid=<?php echo $id ?>", 'mid-large', false, false, false)
 	})
 
 	function delete_progress($id) {
