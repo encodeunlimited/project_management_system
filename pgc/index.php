@@ -186,7 +186,7 @@
                                                                                         color: '#00006B',
                                                                                         children: [
                                                                                             <?php
-                                                                                            $query12 = $conn->query("select * from task_list LEFT JOIN project_list ON task_list.project_id = project_list.id where task_list.project_id='$projectid' ORDER BY project_id ASC");
+                                                                                            $query12 = $conn->query("select *,task_list.start_date as st_date from task_list LEFT JOIN project_list ON task_list.project_id = project_list.id where task_list.project_id='$projectid' ORDER BY project_id ASC");
                                                                                             while ($row12 = $query12->fetch()) {
                                                                                                 $checklist = $row12['task'];
                                                                                             ?>
@@ -196,16 +196,19 @@
                                                                                         content: '<i class="fa fa-file-code-o" ng-click="scope.handleRowIconClick(row.model)"></i> {{row.model.name}}'
                                                                                     },
                                                                                     <?php
-                                                                                    $query123 = $conn->query("select * from task_list LEFT JOIN project_list ON task_list.project_id = project_list.id where task_list.project_id='$projectid' ORDER BY project_id ASC");
+                                                                                    $query123 = $conn->query("select *,task_list.start_date as st_date from task_list LEFT JOIN project_list ON task_list.project_id = project_list.id where task_list.project_id='$projectid' ORDER BY project_id ASC");
                                                                                     while ($row123 = $query123->fetch()) {
                                                                                         $punchlist_id = $row123['id'];
                                                                                         $checklist = $row123['task'];
                                                                                         $progress = $row123['progress'];
-                                                                                        $clstart_date = date('Y/m/d', strtotime($row123["start_date"]));
-                                                                                        //$clstart_date = $row123["start_date"];
 
-                                                                                        $clend_date = date('Y/m/d', strtotime($row123["due_date"]));
-                                                                                        //$clend_date = $row123["due_date"];
+                                                                                        //$clstart_date = date('Y/m/d', strtotime($row123["start_date"]));
+                                                                                        //$clstart_date = date('Y/m/d',strtotime($row123["start_date"]->format('m/d/y')));
+                                                                                        $clstart_date = $row123["st_date"];
+
+                                                                                        //$clend_date = date('Y/m/d', strtotime($row123["due_date"]));
+                                                                                        //$clend_date = date('Y/m/d',strtotime($row123["due_date"]->format('m/d/y')));
+                                                                                        $clend_date = $row123["due_date"];
 
                                                                                     ?>
 
