@@ -27,11 +27,11 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 ?>
 <div class="col-lg-12">
 	<div class="row">
-		<div class="col-md-9" style="max-height: 450px; overflow-y: auto;">
+		<div class="col-md-8" style="max-height: 450px; overflow-y: auto;">
 			<div class="callout callout-info">
-				<div class="col-md-9">
+				<div class="col-md-12">
 					<div class="row">
-						<div class="col-sm-6">
+						<div class="col-sm-4">
 							<dl>
 								<dt><b class="border-bottom border-primary">Project Name</b></dt>
 								<dd><?php echo ucwords($name) ?></dd>
@@ -52,7 +52,7 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 							</dl>
 
 						</div>
-						<div class="col-md-3">
+						<div class="col-md-4">
 							<dl>
 								<dt><b class="border-bottom border-primary">Start Date</b></dt>
 								<dd><?php echo date("F d, Y", strtotime($start_date)) ?></dd>
@@ -91,7 +91,7 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 							</dl>
 
 						</div>
-						<div class="col-md-3">
+						<div class="col-md-4">
 							<dl>
 								<dt><b class="border-bottom border-primary">Site Test Date</b></dt>
 								<dd><?php echo date("F d, Y", strtotime($site_test_date)) ?></dd>
@@ -114,7 +114,7 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 
 			</div>
 		</div>
-		<div class="col-md-3">
+		<div class="col-md-4">
 			<div class="callout callout-warning">
 				<div class="card-header">
 					<span><b>Client/s:</b></span>
@@ -551,8 +551,17 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 	$('.delete_progress').click(function() {
 		_conf("Are you sure to delete this progress?", "delete_progress", [$(this).attr('data-id')])
 	})
+	
 	$('#new_discussion').click(function() {
 		uni_modal("<i class='fa fa-plus'></i> New Discussion", "manage_discussion.php?pid=<?php echo $id ?>", 'mid-large', false, false, false)
+	})
+
+	$('.delete_task').click(function() {
+		_conf("Are you sure to delete this task?", "delete_task", [$(this).attr('data-id')])
+	})
+
+	$('.delete_ticket').click(function() {
+		_conf("Are you sure to delete this ticket?", "delete_ticket", [$(this).attr('data-id')])
 	})
 
 	function delete_progress($id) {
@@ -575,18 +584,90 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 		})
 	}
 
+	
+
 	const id = <?php echo isset($_GET['id']) ? json_encode($_GET['id']) : 'null'; ?>;
+	const uid = <?php echo isset($_SESSION['login_id']) ? json_encode($_SESSION['login_id']) : 'null'; ?>;
 
 	function table() {
 		const xhttp = new XMLHttpRequest();
 		xhttp.onload = function() {
 			document.getElementById("table").innerHTML = this.responseText;
 		}
-		xhttp.open("GET", "system.php?id=" + id);
+		xhttp.open("GET", "system.php?id=" + id + "&uid="+uid);
 		xhttp.send();
 	}
 
 	setInterval(function() {
 		table();
 	}, 10000);
+
+
+	$('.delete_discussion').click(function() {
+        _conf("Are you sure to delete this Chat?", "delete_discussion", [$(this).attr('data-id')])
+    })
+
+	$('.delete_task').click(function() {
+        _conf("Are you sure to delete this Task?", "delete_task", [$(this).attr('data-id')])
+    })
+
+    function delete_ticket($id) {
+		start_load()
+		$.ajax({
+			url: 'ajax.php?action=delete_ticket',
+			method: 'POST',
+			data: {
+				id: $id
+			},
+			success: function(resp) {
+				if (resp == 1) {
+					alert_toast("Data successfully deleted", 'success')
+					setTimeout(function() {
+						location.reload()
+					}, 1500)
+
+				}
+			}
+		})
+	}
+
+	function delete_task($id) {
+		start_load()
+		$.ajax({
+			url: 'ajax.php?action=delete_task',
+			method: 'POST',
+			data: {
+				id: $id
+			},
+			success: function(resp) {
+				if (resp == 1) {
+					alert_toast("Data successfully deleted", 'success')
+					setTimeout(function() {
+						location.reload()
+					}, 1500)
+
+				}
+			}
+		})
+	}
+
+	function delete_discussion($id) {
+		start_load()
+		$.ajax({
+			url: 'ajax.php?action=delete_discussion',
+			method: 'POST',
+			data: {
+				id: $id
+			},
+			success: function(resp) {
+				if (resp == 1) {
+					alert_toast("Data successfully deleted", 'success')
+					setTimeout(function() {
+						location.reload()
+					}, 1500)
+
+				}
+			}
+		})
+	}
 </script>

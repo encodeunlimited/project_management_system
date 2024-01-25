@@ -92,6 +92,11 @@ if($action == 'delete_progress'){
 	if($save)
 		echo $save;
 }
+if($action == 'delete_discussion'){
+	$save = $crud->delete_discussion();
+	if($save)
+		echo $save;
+}
 if($action == 'get_report'){
 	$get = $crud->get_report();
 	if($get)

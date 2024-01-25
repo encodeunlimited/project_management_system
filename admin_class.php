@@ -386,6 +386,8 @@ class Action
 			return 1;
 		}
 	}
+
+	
 	function save_discussion()
 	{
 		extract($_POST);
@@ -413,6 +415,16 @@ class Action
 			return 1;
 		}
 	}
+
+	function delete_discussion()
+	{
+		extract($_POST);
+		$delete = $this->db->query("DELETE FROM discussion_list where id = $id");
+		if ($delete) {
+			return 1;
+		}
+	}
+
 	function get_report()
 	{
 		extract($_POST);
