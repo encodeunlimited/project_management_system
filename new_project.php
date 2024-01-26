@@ -175,7 +175,7 @@
 	// 		}
 	// 	})
 	// })
-	
+
 
 	$('#manage-project').submit(function(e) {
 		e.preventDefault();
@@ -222,7 +222,11 @@
 						data: {
 							recipients: recipients,
 							subject: 'New Project Assigned - ' + formData.get('name'),
-							body: 'A new project has been assigned to You - Name: ' + formData.get('name') + ' - Description: ' + formData.get('description'),
+							body: '<p>A new project has been assigned to you:</p>' +
+								'<table border="5">' +
+								'<tr><th>Name</th><th>Description</th></tr>' +
+								'<tr><td>' + formData.get('name') + '</td><td>' + formData.get('description') + '</td></tr>' +
+								'</table>',
 						},
 						method: 'POST',
 						success: function(emailResp) {
