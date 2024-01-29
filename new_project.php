@@ -93,7 +93,7 @@
 									$managers = $conn->query("SELECT *,concat(firstname,' ',lastname) as name FROM users where type = 2 order by concat(firstname,' ',lastname) asc ");
 									while ($row = $managers->fetch_assoc()) :
 									?>
-										<option required value="<?php echo $row['id'] ?>" data-email="<?php echo $row['email'] ?>" <?php echo isset($manager_id) && $manager_id == $row['id'] ? "selected" : '' ?>><?php echo ucwords($row['name']) ?></option>
+										<option required value="<?php echo $row['id'] ?>" data-email="<?php echo $row['email'] ?>" data-name="<?php echo $row['name'] ?>" <?php echo isset($manager_id) && $manager_id == $row['id'] ? "selected" : '' ?>><?php echo ucwords($row['name']) ?></option>
 									<?php endwhile; ?>
 								</select>
 							</div>
@@ -110,7 +110,7 @@
 								$employees = $conn->query("SELECT *,concat(firstname,' ',lastname) as name FROM users where type = 3 order by concat(firstname,' ',lastname) asc ");
 								while ($row = $employees->fetch_assoc()) :
 								?>
-									<option required value="<?php echo $row['id'] ?>" data-email="<?php echo $row['email'] ?>" <?php echo isset($user_ids) && in_array($row['id'], explode(',', $user_ids)) ? "selected" : '' ?>><?php echo ucwords($row['name']) ?></option>
+									<option required value="<?php echo $row['id'] ?>" data-email="<?php echo $row['email'] ?>" data-name="<?php echo $row['name'] ?>" <?php echo isset($user_ids) && in_array($row['id'], explode(',', $user_ids)) ? "selected" : '' ?>><?php echo ucwords($row['name']) ?></option>
 								<?php endwhile; ?>
 							</select>
 
@@ -127,7 +127,7 @@
 								$clients = $conn->query("SELECT *,concat(firstname,' ',lastname) as name FROM users where type = 4 order by concat(firstname,' ',lastname) asc ");
 								while ($row = $clients->fetch_assoc()) :
 								?>
-									<option required value="<?php echo $row['id'] ?>" data-email="<?php echo $row['email'] ?>" <?php echo isset($client_ids) && in_array($row['id'], explode(',', $client_ids)) ? "selected" : '' ?>><?php echo ucwords($row['name']) ?></option>
+									<option required value="<?php echo $row['id'] ?>" data-email="<?php echo $row['email'] ?>" data-name="<?php echo $row['name'] ?>" <?php echo isset($client_ids) && in_array($row['id'], explode(',', $client_ids)) ? "selected" : '' ?>><?php echo ucwords($row['name']) ?></option>
 								<?php endwhile; ?>
 							</select>
 						</div>
@@ -183,12 +183,37 @@
 		var form = $(this)[0];
 		var formData = new FormData(form);
 		var recipients = [];
+		var managerNames = [];
+		var clientNames = [];
+		var userNames = [];
 
 		// Extract email addresses from user_ids dropdown
 		$('#manager_id option:selected, #user_ids option:selected, #client_ids option:selected').each(function() {
 			var email = $(this).data('email');
 			if (email) {
 				recipients.push(email);
+			}
+		});
+
+		// Extract email addresses and usernames from user_ids dropdown
+		$('#manager_id option:selected').each(function() {
+			var name = $(this).data('name');
+			if (name) {
+				managerNames.push(name);
+			}
+		});
+
+		$('#user_ids option:selected').each(function() {
+			var name = $(this).data('name');
+			if (name) {
+				userNames.push(name);
+			}
+		});
+
+		$('#client_ids option:selected').each(function() {
+			var name = $(this).data('name');
+			if (name) {
+				clientNames.push(name);
 			}
 		});
 
@@ -223,10 +248,7 @@
 							recipients: recipients,
 							subject: 'New Project Assigned - ' + formData.get('name'),
 							body: '<p>A new project has been assigned to you:</p>' +
-								'<table border="5">' +
-								'<tr><th>Name</th><th>Description</th></tr>' +
-								'<tr><td>' + formData.get('name') + '</td><td>' + formData.get('description') + '</td></tr>' +
-								'</table>',
+								'<table style="border-collapse:collapse;border-spacing:0" class="tg"><thead><tr><th style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">Project Name</th><th style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal" colspan="3">' + formData.get('name') + '</th></tr></thead><tbody><tr><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">Start Date</td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">' + formData.get('start_date') + '</td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal" colspan="2" rowspan="2"></td></tr><tr><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">End Date</td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">' + formData.get('end_date') + '</td></tr><tr><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal" rowspan="2">Members</td><td style="background-color:#fffc9e;border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">Manager</td><td style="background-color:#9aff99;border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">Client/s</td><td style="background-color:#96fffb;border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">Developer/s</td></tr><tr><td style="background-color:#fffc9e;border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">'+ managerNames +'</td><td style="background-color:#9aff99;border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">'+ clientNames+'</td><td style="background-color:#96fffb;border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">'+ userNames+'</td></tr><tr><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">Discription</td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal" colspan="3">' + formData.get('description') + '</td></tr></tbody></table>',
 						},
 						method: 'POST',
 						success: function(emailResp) {
