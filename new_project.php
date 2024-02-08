@@ -217,15 +217,6 @@
 			}
 		});
 
-		formData.append('name', $('input[name="name"]').val());
-		formData.append('description', $('textarea[name="description"]').val());
-
-		if (formData.get('name') === '') {
-			alert_toast('Name is required', "error");
-			//$('input[name="name"]').focus(); // Set focus on the "Name" text field
-			return;
-		}
-
 		$.ajax({
 			url: 'ajax.php?action=save_project',
 			data: formData,
