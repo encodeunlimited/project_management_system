@@ -177,7 +177,7 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 			<div class="card card-outline card-danger">
 				<div class="card-header">
 					<span><b>Ticket List:</b></span>
-					<?php if ($_SESSION['login_type'] != 3) : ?>
+					<?php if ($_SESSION['login_type'] != 0) : ?>
 						<div class="card-tools">
 							<button class="btn btn-danger bg-gradient-danger btn-sm" type="button" id="new_ticket"><i class="fa fa-plus"></i> New Ticket</button>
 						</div>
@@ -259,7 +259,7 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 											<div class="dropdown-menu" style="">
 												<a class="dropdown-item view_ticket" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>" data-task="<?php echo $row['subject'] ?>">View</a>
 												<div class="dropdown-divider"></div>
-												<?php if ($_SESSION['login_type'] != 3) : ?>
+												<?php if ($_SESSION['login_type'] != 0) : ?>
 													<a class="dropdown-item edit_ticket" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>" data-task="<?php echo $row['subject'] ?>">Edit</a>
 													<div class="dropdown-divider"></div>
 													<a class="dropdown-item delete_ticket" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>">Delete</a>
@@ -282,7 +282,7 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 			<div class="card card-outline card-primary">
 				<div class="card-header">
 					<span><b>Task List:</b></span>
-					<?php if ($_SESSION['login_type'] != 3) : ?>
+					<?php if($_SESSION['login_type'] == 1 || $_SESSION['login_type'] == 2): ?>
 						<div class="card-tools">
 							<button class="btn btn-primary bg-gradient-primary btn-sm" type="button" id="new_task"><i class="fa fa-plus"></i> New Task</button>
 						</div>
@@ -410,7 +410,7 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 											<div class="dropdown-menu" style="">
 												<a class="dropdown-item view_task" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>" data-task="<?php echo $row['task'] ?>">View</a>
 												<div class="dropdown-divider"></div>
-												<?php if ($_SESSION['login_type'] != 3) : ?>
+												<?php if($_SESSION['login_type'] == 1 || $_SESSION['login_type'] == 2): ?>
 													<a class="dropdown-item edit_task" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>" data-task="<?php echo $row['task'] ?>">Edit</a>
 													<div class="dropdown-divider"></div>
 													<a class="dropdown-item delete_task" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>">Delete</a>
@@ -434,7 +434,9 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 				<div class="card-header">
 					<b>Members Progress/Activity</b>
 					<div class="card-tools">
+					<?php if( $_SESSION['login_type'] == 1 || $_SESSION['login_type'] == 2 || $_SESSION['login_type'] == 3): ?>
 						<button class="btn btn-warning bg-gradient-warning btn-sm" type="button" id="new_productivity"><i class="fa fa-plus"></i> New Productivity</button>
+						<?php endif; ?>
 					</div>
 				</div>
 				<div class="card-body">
@@ -450,11 +452,13 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 										<span class="btndropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor: pointer;">
 											<i class="fa fa-ellipsis-v"></i>
 										</span>
+										<?php if($_SESSION['login_type'] == 1 || $_SESSION['login_type'] == 2 || $_SESSION['login_type'] == 3): ?>
 										<div class="dropdown-menu">
 											<a class="dropdown-item manage_progress" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>" data-task="<?php echo $row['task'] ?>">Edit</a>
 											<div class="dropdown-divider"></div>
 											<a class="dropdown-item delete_progress" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>">Delete</a>
 										</div>
+										<?php endif; ?>
 									</span>
 								<?php endif; ?>
 								<img class="img-circle img-bordered-sm" src="assets/uploads/<?php echo $row['avatar'] ?>" alt="user image">
@@ -525,10 +529,13 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 </style>
 <script>
 	$('#new_ticket').click(function() {
-		uni_modal("New Ticket For <?php echo ucwords($name) ?>", "manage_ticket.php?pid=<?php echo $id ?>", "mid-large", false, false, false)
-	})
+		var login_name = <?php echo json_encode($_SESSION['login_name']); ?>;
+		uni_modal("New Ticket For <?php echo ucwords($name) ?>", "manage_ticket.php?pid=<?php echo $id ?>&login_name=" + login_name, "mid-large", false, false, false);
+	});
+
 	$('.edit_ticket').click(function() {
-		uni_modal("Edit Ticket: " + $(this).attr('data-task'), "manage_ticket.php?pid=<?php echo $id ?>&id=" + $(this).attr('data-id'), "mid-large", false, false, false)
+		var login_name = <?php echo json_encode($_SESSION['login_name']); ?>;
+		uni_modal("Edit Ticket: " + $(this).attr('data-task'), "manage_ticket.php?pid=<?php echo $id ?>&id=" + $(this).attr('data-id')+"&login_name=" + login_name, "mid-large", false, false, false)
 	})
 	$('.view_ticket').click(function() {
 		uni_modal("Ticket Details", "view_ticket.php?id=" + $(this).attr('data-id'), "mid-large", false, false, false)
@@ -543,17 +550,22 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 		uni_modal("Task Details", "view_task.php?id=" + $(this).attr('data-id'), "mid-large", false, false, false)
 	})
 	$('#new_productivity').click(function() {
-		uni_modal("<i class='fa fa-plus'></i> New Progress", "manage_progress.php?pid=<?php echo $id ?>", "mid-large", false, false, false)
+		var login_name = <?php echo json_encode($_SESSION['login_name']); ?>;
+		uni_modal("<i class='fa fa-plus'></i> New Progress", "manage_progress.php?pid=<?php echo $id ?>"+"&login_name=" + login_name, "mid-large", false, false, false)
 	})
 	$('.manage_progress').click(function() {
-		uni_modal("<i class='fa fa-edit'></i> Edit Progress", "manage_progress.php?pid=<?php echo $id ?>&id=" + $(this).attr('data-id'), 'mid-large', false, false, false)
+		var login_name = <?php echo json_encode($_SESSION['login_name']); ?>;
+		uni_modal("<i class='fa fa-edit'></i> Edit Progress", "manage_progress.php?pid=<?php echo $id ?>&id=" + $(this).attr('data-id')+"&login_name=" + login_name, 'mid-large', false, false, false)
 	})
 	$('.delete_progress').click(function() {
 		_conf("Are you sure to delete this progress?", "delete_progress", [$(this).attr('data-id')])
 	})
-	
+
 	$('#new_discussion').click(function() {
-		uni_modal("<i class='fa fa-plus'></i> New Discussion", "manage_discussion.php?pid=<?php echo $id ?>", 'mid-large', false, false, false)
+		//location.reload(true);
+		var login_name = <?php echo json_encode($_SESSION['login_name']); ?>;
+		uni_modal("<i class='fa fa-plus'></i> New Discussion", "manage_discussion.php?pid=<?php echo $id ?>&login_name="+login_name, 'mid-large', false, false, false);
+
 	})
 
 	$('.delete_task').click(function() {
@@ -584,7 +596,7 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 		})
 	}
 
-	
+
 
 	const id = <?php echo isset($_GET['id']) ? json_encode($_GET['id']) : 'null'; ?>;
 	const uid = <?php echo isset($_SESSION['login_id']) ? json_encode($_SESSION['login_id']) : 'null'; ?>;
@@ -594,7 +606,7 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 		xhttp.onload = function() {
 			document.getElementById("table").innerHTML = this.responseText;
 		}
-		xhttp.open("GET", "system.php?id=" + id + "&uid="+uid);
+		xhttp.open("GET", "chat.php?id=" + id + "&uid=" + uid);
 		xhttp.send();
 	}
 
@@ -603,15 +615,12 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 	}, 10000);
 
 
-	$('.delete_discussion').click(function() {
-        _conf("Are you sure to delete this Chat?", "delete_discussion", [$(this).attr('data-id')])
-    })
-
+	
 	$('.delete_task').click(function() {
-        _conf("Are you sure to delete this Task?", "delete_task", [$(this).attr('data-id')])
-    })
+		_conf("Are you sure to delete this Task?", "delete_task", [$(this).attr('data-id')])
+	})
 
-    function delete_ticket($id) {
+	function delete_ticket($id) {
 		start_load()
 		$.ajax({
 			url: 'ajax.php?action=delete_ticket',
@@ -651,23 +660,5 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 		})
 	}
 
-	function delete_discussion($id) {
-		start_load()
-		$.ajax({
-			url: 'ajax.php?action=delete_discussion',
-			method: 'POST',
-			data: {
-				id: $id
-			},
-			success: function(resp) {
-				if (resp == 1) {
-					alert_toast("Data successfully deleted", 'success')
-					setTimeout(function() {
-						location.reload()
-					}, 1500)
-
-				}
-			}
-		})
-	}
+	
 </script>

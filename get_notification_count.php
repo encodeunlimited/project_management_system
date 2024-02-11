@@ -2,12 +2,14 @@
 include('db_connect.php');
 
 // Fetch the notification count from the ticket_list table
-$queryTicket = "SELECT COUNT(*) AS ticketCount FROM ticket_list WHERE status = '1'";
+$queryTicket = "SELECT COUNT(*) AS ticketCount FROM ticket_list WHERE status in(1,2,3,4)";
 $resultTicket = $conn->query($queryTicket);
 
 // Fetch the notification count from the task_list table
-$queryTask = "SELECT COUNT(*) AS taskCount FROM task_list";
+$queryTask = "SELECT COUNT(*) AS taskCount FROM task_list WHERE status in(1,2)";
 $resultTask = $conn->query($queryTask);
+
+
 
 if ($resultTicket && $resultTask) {
     $rowTicket = $resultTicket->fetch_assoc();

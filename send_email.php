@@ -22,13 +22,13 @@ try {
     $mail->isSMTP();
     $mail->Host       = 'smtp.gmail.com';
     $mail->SMTPAuth   = true;
-    $mail->Username   = 'asanka.ird@gmail.com';
-    $mail->Password   = 'xgqgphwwpdwwnhor';
+    $mail->Username   = 'pmuovt@gmail.com';
+    $mail->Password   = 'wspjggotibsxrdku';
     $mail->SMTPSecure = 'tls';
     $mail->Port       = 587;
 
     // Recipients
-    $mail->setFrom('common.ird23@gmail.com', 'PMS ALERT');
+    $mail->setFrom('pmuovt@gmail.com', 'PMS ALERT');
     foreach ($recipients as $recipient) {
         $mail->addAddress($recipient);
     }
@@ -39,8 +39,8 @@ try {
     $mail->Body = $body;
 
     $mail->send();
-    echo '<script>alert("Message has been sent");</script>';
+    //echo '<script>alert("Message has been sent");</script>';
 } catch (Exception $e) {
-    echo '<script>alert("Message could not be sent. Mailer Error: ' . $mail->ErrorInfo . '");</script>';
+    //echo '<script>alert("Message could not be sent. Mailer Error: ' . $mail->ErrorInfo . '");</script>';
 }
 // }

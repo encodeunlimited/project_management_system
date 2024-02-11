@@ -123,7 +123,7 @@
 
   <!-- Main Footer -->
   <footer class="main-footer">
-    <strong>Copyright &copy; 2023 <a href="http://univotec.ac.lk/">Univotec</a>.</strong>
+    <strong>Copyright &copy; 2024 <a href="http://univotec.ac.lk/">Univotec</a>.</strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
       <b><?php echo $_SESSION['system']['name'] ?></b>

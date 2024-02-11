@@ -19,14 +19,15 @@ header("location:index.php?page=home");
 
 ?>
 <?php include 'header.php' ?>
-<body class="hold-transition login-page bg-black">
-<div class="login-box">
-  <div class="login-logo">
-    <a href="#" class="text-white"><b><?php echo $_SESSION['system']['name'] ?></b></a>
+<body class="hold-transition login-page bg-black" style="background-image: url('https://i.postimg.cc/qMCyrTGt/bg.jpg'); background-size: cover;">
+<div class="login-logo">
+    <a href="#" class="text-black"><span style="font-size: 80px; font-weight: bold; color: black;"><?php echo $_SESSION['system']['name'] ?></span></a>
   </div>
+<div class="login-box">
+  
   <!-- /.login-logo -->
   <div class="card">
-    <div class="card-body login-card-body">
+    <div class="card-body login-card-body" style="background-color: #333; color: #fff;">
       <form action="" id="login-form">
         <div class="input-group mb-3">
           <input type="email" class="form-control" name="email" required placeholder="Email">

@@ -63,55 +63,56 @@ if (isset($_GET['id'])) {
 			reader.readAsDataURL(input.files[0]);
 		}
 	}
-	// $('#manage-user').submit(function(e){
-	// 	e.preventDefault();
-	// 	start_load()
-	// 	$.ajax({
-	// 		url:'ajax.php?action=update_user',
-	// 		data: new FormData($(this)[0]),
-	// 	    cache: false,
-	// 	    contentType: false,
-	// 	    processData: false,
-	// 	    method: 'POST',
-	// 	    type: 'POST',
-	// 		success:function(resp){
-	// 			if(resp ==1){
-	// 				alert_toast("Data successfully saved",'success')
-	// 				setTimeout(function(){
-	// 					location.reload()
-	// 				},1500)
-	// 			}else{
-	// 				$('#msg').html('<div class="alert alert-danger">Username already exist</div>')
-	// 				end_load()
-	// 			}
-	// 		}
-	// 	})
-	// })
-
-	$('#manage-user').submit(function(e) {
+	
+	$('#manage-user').submit(function(e){
 		e.preventDefault();
-		if (validateForm()) {
-			start_load();
-			$.ajax({
-				url: 'ajax.php?action=update_user',
-				data: new FormData($(this)[0]),
-				cache: false,
-				contentType: false,
-				processData: false,
-				method: 'POST',
-				type: 'POST',
-				success: function(resp) {
-					if (resp == 1) {
-						alert_toast("Data successfully saved", 'success');
-						setTimeout(function() {
-							location.reload();
-						}, 1500);
-					} else {
-						$('#msg').html('<div class="alert alert-danger">Username already exists</div>');
-						end_load();
-					}
+		start_load()
+		$.ajax({
+			url:'ajax.php?action=update_user',
+			data: new FormData($(this)[0]),
+		    cache: false,
+		    contentType: false,
+		    processData: false,
+		    method: 'POST',
+		    type: 'POST',
+			success:function(resp){
+				if(resp ==1){
+					alert_toast("Data successfully saved",'success')
+					setTimeout(function(){
+						location.reload()
+					},1500)
+				}else{
+					$('#msg').html('<div class="alert alert-danger">Username already exist</div>')
+					end_load()
 				}
-			});
-		}
-	});
+			}
+		})
+	})
+
+	// $('#manage-user').submit(function(e) {
+	// 	e.preventDefault();
+	// 	if (validateForm()) {
+	// 		start_load();
+	// 		$.ajax({
+	// 			url: 'ajax.php?action=update_user',
+	// 			data: new FormData($(this)[0]),
+	// 			cache: false,
+	// 			contentType: false,
+	// 			processData: false,
+	// 			method: 'POST',
+	// 			type: 'POST',
+	// 			success: function(resp) {
+	// 				if (resp == 1) {
+	// 					alert_toast("Data successfully saved", 'success');
+	// 					setTimeout(function() {
+	// 						location.reload();
+	// 					}, 1500);
+	// 				} else {
+	// 					$('#msg').html('<div class="alert alert-danger">Username already exists</div>');
+	// 					end_load();
+	// 				}
+	// 			}
+	// 		});
+	// 	}
+	// });
 </script>

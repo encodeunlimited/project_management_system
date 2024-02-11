@@ -1,15 +1,21 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-6">
     <div class="dropdown">
    	<a href="./" class="brand-link">
-        <?php if($_SESSION['login_type'] == 1): ?>
-        <h3 class="text-center p-0 m-0"><b>ADMIN</b></h3>
-        <?php else: ?>
-        <h3 class="text-center p-0 m-0"><b>USER</b></h3>
-        <?php endif; ?>
-
+     <?php if($_SESSION['login_type'] == 1): ?>
+    <h3 class="text-center p-0 m-0"><b>Admin</b></h3>
+<?php elseif($_SESSION['login_type'] == 2): ?>
+    <h3 class="text-center p-0 m-0"><b>Manager</b></h3>
+<?php elseif($_SESSION['login_type'] == 3): ?>
+    <h3 class="text-center p-0 m-0"><b>Developer</b></h3>
+<?php elseif($_SESSION['login_type'] == 4): ?>
+    <h3 class="text-center p-0 m-0"><b>Client</b></h3>
+<?php else: ?>
+    <h3 class="text-center p-0 m-0"><b>NAN</b></h3>
+<?php endif; ?>
     </a>
-    
-      
+    </div>
+    <div>
+      <br>
     </div>
     <div class="sidebar pb-4 mb-4">
       <nav class="mt-2">
@@ -31,7 +37,7 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-            <?php if($_SESSION['login_type'] != 3): ?>
+            <?php if($_SESSION['login_type'] == 1 || $_SESSION['login_type'] == 2): ?>
               <li class="nav-item">
                 <a href="./index.php?page=new_project" class="nav-link nav-new_project tree-item">
                   <i class="fas fa-angle-right nav-icon"></i>
@@ -53,7 +59,7 @@
                   <p>Task</p>
                 </a>
           </li>
-          <?php if($_SESSION['login_type'] != 3): ?>
+          <?php if($_SESSION['login_type'] != 4): ?>
            <li class="nav-item">
            <a href="#" class="nav-link nav-reports">
               <i class="fas fa-th-list nav-icon"></i>
@@ -64,15 +70,22 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
+                <!-- https://uovtpmcom.skipdns.link/project_management_system/pgc?page=greports -->
                 <a href="http://localhost/project_management_system/pgc?page=greports" class="nav-link nav-greports tree-item" target="_blank">
                   <i class="fas fa-angle-right nav-icon"></i>
                   <p>Grant Chart</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="./index.php?page=copy_reports" class="nav-link nav-copy_reports tree-item" >
+                <a href="./index.php?page=Project_reports" class="nav-link nav-Project_reports tree-item" >
                   <i class="fas fa-angle-right nav-icon"></i>
-                  <p>Other</p>
+                  <p>Project Summery</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="./index.php?page=Progress_reports" class="nav-link nav-Progress_reports tree-item" >
+                  <i class="fas fa-angle-right nav-icon"></i>
+                  <p>Progress report</p>
                 </a>
               </li>
             </ul>

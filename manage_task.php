@@ -6,7 +6,36 @@ if (isset($_GET['id'])) {
 		$$k = $v;
 	}
 }
+
+$project_query = $conn->query("SELECT * FROM project_list where id = {$_GET['pid']}");
+$project = $project_query->fetch_assoc();
+
+// // Fetch user details from users table
+$users_query = $conn->query("SELECT * FROM users");
+$users = array();
+while ($row = $users_query->fetch_assoc()) {
+	$users[$row['id']] = $row;
+}
+
+$recipients = array();
+$recipients[] = $users[$project['manager_id']]['email']; // Add manager's email
+$userIds = explode(',', $project['user_ids']); // Assuming user_ids is a comma-separated list of user IDs
+foreach ($userIds as $userId) {
+	$recipients[] = $users[$userId]['email']; // Add user's email
+}
+$clientIds = explode(',', $project['client_ids']); // Assuming user_ids is a comma-separated list of user IDs
+foreach ($clientIds as $clientId) {
+	$recipients[] = $users[$clientId]['email']; // Add user's email
+}
+
+
+// Encode the recipients array to JSON
+$recipients_json = json_encode($recipients);
+$projectIdName = $project['id'] . ' - ' . $project['name'];
+$projectIdNameJSON = json_encode($projectIdName);
+
 ?>
+
 <div class="container-fluid">
 	<form action="" id="manage-task">
 		<input type="hidden" name="id" value="<?php echo isset($id) ? $id : '' ?>">
@@ -75,8 +104,15 @@ if (isset($_GET['id'])) {
 
 		<div class="col-lg-12 text-right justify-content-center d-flex">
 			<button class="btn btn-primary mr-2">Save</button>
-			<button class="btn btn-secondary" type="button" onclick="$('#uni_modal').modal('hide')">Cancel</button>
-			
+			<button class="btn btn-secondary" type="button" onclick="closeModalAndRefresh()">Cancel</button>
+
+			<script>
+				function closeModalAndRefresh() {
+					$('#uni_modal').modal('hide');
+					location.reload(); // This will refresh the view_project.php file
+				}
+			</script>
+
 		</div>
 	</form>
 </div>
@@ -102,22 +138,73 @@ if (isset($_GET['id'])) {
 	$('#manage-task').submit(function(e) {
 		e.preventDefault()
 		start_load()
+
+
+		var formData = new FormData(this)
+
+		var projectIdName = <?php echo $projectIdNameJSON ?>
+		//var recipients = []
+		var recipients = <?php echo json_encode($recipients) ?>
+
+		var status = document.getElementById('status')
+        var selectedstatus = status.options[status.selectedIndex].text
+
+		var type = document.getElementById('type')
+        var selectedtype = type.options[type.selectedIndex].text
+
+		var priority = document.getElementById('priority')
+        var selectedpriority = priority.options[type.selectedIndex].text
+
+
 		$.ajax({
 			url: 'ajax.php?action=save_task',
-			data: new FormData($(this)[0]),
+			data: formData,
 			cache: false,
 			contentType: false,
 			processData: false,
 			method: 'POST',
 			type: 'POST',
 			success: function(resp) {
+				alert_toast('Data successfully saved and email sent', "success");
+
+				setTimeout(function() {
+					location.reload()
+				}, 1500);
 				if (resp == 1) {
-					alert_toast('Data successfully saved', "success");
-					setTimeout(function() {
-						location.reload()
-					}, 1500)
+					// Project saved successfully, now send the email
+					$.ajax({
+						url: 'send_email.php', // Assuming the email sending function is accessible via this URL
+						data: {
+							recipients: recipients,
+							subject: 'New Task Assigned - '+' to '+projectIdName,//+ formData.get('task')
+							body: '<p>A new Task has been assigned to you:</p>'+
+							'<table style="border-collapse:collapse;border-spacing:0" class="tg"><thead><tr><th style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">Task Name</th><th style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">' + formData.get('task') + '</th></tr></thead><tbody><tr><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">Start date</td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">' + formData.get('start_date') + '</td></tr><tr><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">End date</td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">' + formData.get('due_date') + '</td></tr><tr><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">Type</td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">' + selectedtype + '</td></tr><tr><td style="border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">Priority</td><td style="border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">' + selectedpriority + '</td></tr><tr><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">Status</td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">' + selectedstatus + '</td></tr><tr><td style="border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">Progress</td><td style="border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">' + formData.get('progress') + '</td></tr><tr><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">Description</td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">' + formData.get('description') + '</td></tr></tbody></table>',
+						},
+						method: 'POST',
+						success: function(emailResp) {
+							alert_toast('Email sent successfully', "success");
+						}
+					});
 				}
 			}
-		})
+		});
+
+		// $.ajax({
+		// 	url: 'ajax.php?action=save_task',
+		// 	data: new FormData($(this)[0]),
+		// 	cache: false,
+		// 	contentType: false,
+		// 	processData: false,
+		// 	method: 'POST',
+		// 	type: 'POST',
+		// 	success: function(resp) {
+		// 		if (resp == 1) {
+		// 			alert_toast('Data successfully saved', "success");
+		// 			setTimeout(function() {
+		// 				location.reload()
+		// 			}, 1500)
+		// 		}
+		// 	}
+		// })
 	})
 </script>

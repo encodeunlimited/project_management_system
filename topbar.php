@@ -9,7 +9,7 @@
     <?php endif; ?>
     <li>
       <a class="nav-link text-white" href="./" role="button">
-        <large><b><?php echo $_SESSION['system']['name'] ?></b></large>
+        <Small><b><?php echo $_SESSION['system']['name'] ?></b></Small>
       </a>
     </li>
   </ul>
@@ -26,7 +26,8 @@
           <ul id="notification-list">
             <?php
 
-            $query = "SELECT * FROM ticket_list WHERE status = '1' ORDER BY id DESC";
+            $query = "SELECT t.*, p.name FROM ticket_list t JOIN project_list p ON t.project_id = p.id WHERE t.status IN (1,2,3,4) ORDER BY t.id DESC";
+
             $result = $conn->query($query);
 
             // Check if there are any rows returned
@@ -35,7 +36,7 @@
               echo "<h3>Ticket List</h3>";
               echo "<ul class='ticket-list'>";
               while ($row = $result->fetch_assoc()) {
-                echo "<li><strong>Subject:</strong> " . $row["subject"] . " - <strong>Description:</strong> " . $row["description"] . "</li>";
+                echo "<li><strong>Project:</strong> " . $row["name"] . " - <strong>Subject:</strong> " . $row["subject"] . "</li>";
                 // You can format the output as per your requirement
               }
               echo "</ul>";
@@ -43,21 +44,24 @@
               echo "<p>No tickets available</p>";
             }
 
+
             // Fetch the last five rows from the ticket_list table
-            $query = "SELECT * FROM task_list ORDER BY id DESC LIMIT 5";
+            $query = "SELECT t.*, p.name FROM task_list t JOIN project_list p ON t.project_id = p.id WHERE t.status IN (1,2) ORDER BY t.id DESC LIMIT 5";
+
             $result = $conn->query($query);
 
-            // Output the last five ticket entries as a separate list
+            // Output the last five task entries as a separate list
             echo "<h3>Task List</h3>";
             echo "<ul class='notification-list'>";
             if ($result->num_rows > 0) {
               while ($row = $result->fetch_assoc()) {
-                echo "<li><strong>Subject:</strong> " . $row["task"] . " - <strong>Description:</strong> " . $row["description"] . "</li>";
+                echo "<li><strong>Project:</strong> " . $row["name"] . " - <strong>Subject:</strong> " . $row["task"] . "</li>";
                 // You can format the output as per your requirement
               }
             } else {
               echo "<p>No notifications</p>";
             }
+
             echo "</ul>";
 
 
